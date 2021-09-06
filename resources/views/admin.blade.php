@@ -203,7 +203,7 @@
                                     </span></a>
                             </li>
                             <li>
-                                <a href="{{ route('soporte') }}"><i class="ti-comments"></i><span
+                                <a href="{{ route('altaUsuarioSistema') }}"><i class="ti-comments"></i><span
                                         class="right-nav-text">Dar de alta usuarios
                                     </span></a>
                             </li>
