@@ -23,7 +23,7 @@
                 <div class="card card-statistics h-100">
                     <div class="card-body">
                         <h5 class="card-title">Da de alta un usuario en el sistema</h5>
-                        <form id="formulario" method="post" action="{{ route('saveuser') }}" class="form-horizontal">
+                        <form method="post" action="{{ route('saveuser') }}" class="form-horizontal">
                             @csrf
 
                             <div class="form-group">
