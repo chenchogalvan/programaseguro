@@ -176,6 +176,73 @@
         </div>
         @endrole
 
+        @role('Agent')
+
+        <div class="row">
+            <div class="col-xl-12 mb-30">
+                <div class="card card-statistics h-100">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="datatable" class="table table-striped table-bordered p-0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Teléfono</th>
+                                        <th>Correo</th>
+                                        <th>Asunto</th>
+                                        <th>Mensaje</th>
+                                        <th>Estatus</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach ($t as $t)
+
+                                        <tr>
+                                            <td>{{ $t->id }}</td>
+                                            <td>{{ $t->user->name }} {{ $t->user->middleName }}
+                                                {{ $t->user->lastName }}
+                                            </td>
+                                            <td>{{ $t->user->phone }}</td>
+                                            <td>{{ $t->user->email }}</td>
+
+                                            <td>{{ $t->asunto }}</td>
+                                            <td>{{ $t->mensaje }}</td>
+                                            <td>
+                                                @if ($t->status == 'abierto')
+                                                    <span class="badge badge-pill badge-success">{{ $t->status }}</span>
+
+                                                @elseif ($t->status == 'cerrado')
+                                                    <span class="badge badge-pill badge-danger">{{ $t->status }}</span>
+
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($t->status == 'abierto')
+                                                    <a href="{{ route('cerrarTicket', $t->id) }}"
+                                                        class="btn btn-danger btn-sm"><i class="fa fa-warning"></i>
+                                                        Cerrar ticket</a>
+                                                @else
+
+                                                @endif
+                                            </td>
+                                        </tr>
+
+                                    @endforeach
+
+
+                                </tbody>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endrole
+
     </div>
 @endsection
 
