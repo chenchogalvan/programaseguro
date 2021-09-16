@@ -14,6 +14,10 @@ use Illuminate\Support\Str;
 use DB;
 
 
+use Illuminate\Auth\Events\Registered;
+
+
+
 
 
 
@@ -57,7 +61,9 @@ class UserController extends Controller
             'password' => $password
         ];
 
-        Mail::to($request->get('email'))->send(new RegisterEmail($details));
+        //Mail::to($request->get('email'))->send(new RegisterEmail($details));
+
+        event(new Registered($u));
 
         //dd("Correo enviado");
 
@@ -65,7 +71,7 @@ class UserController extends Controller
 
         $u->assignRole('user');
 
-        return redirect()->route('login')->with('success', '');
+        return redirect()->route('login')->with('success', 'Te has registrado de forma correcta en nuestro sistema de Programa seguro. Te hemos enviado un correo electornico para validar tu registró y que puedas acceder a nuestro sistema.');
 
     }
 

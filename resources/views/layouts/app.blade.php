@@ -1,83 +1,103 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="" />
+    <meta name="description" content="Programa seguro - Inicia sesión" />
+    <meta name="author" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>Programa seguro - Inicia sesión</title>
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/images/favicon.ico" />
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <!-- Font -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Poppins:200,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900">
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
+
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+
+    <div class="wrapper">
+
+        <!--=================================
+ preloader -->
+
+        <div id="pre-loader">
+            <img src="/images/pre-loader/loader-01.svg" alt="">
+        </div>
+
+        <!--=================================
+ preloader -->
+
+        <!--=================================
+ login-->
+
+
+        <section class="height-100vh d-flex align-items-center page-section-ptb login" style="background-color #f2f2f2;">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                @yield('content')
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
             </div>
-        </nav>
+        </section>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+        <!--=================================
+ login-->
+
     </div>
+
+
+
+    <!--=================================
+ jquery -->
+
+    <!-- jquery -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+
+    <!-- plugins-jquery -->
+    <script src="/js/plugins-jquery.js"></script>
+
+    <!-- plugin_path -->
+    <script>
+        var plugin_path = '/js/';
+    </script>
+
+    <!-- chart -->
+    <script src="/js/chart-init.js"></script>
+
+    <!-- calendar -->
+    <script src="/js/calendar.init.js"></script>
+
+    <!-- charts sparkline -->
+    <script src="/js/sparkline.init.js"></script>
+
+    <!-- charts morris -->
+    <script src="/js/morris.init.js"></script>
+
+    <!-- datepicker -->
+    <script src="/js/datepicker.js"></script>
+
+    <!-- sweetalert2 -->
+    <script src="/js/sweetalert2.js"></script>
+
+    <!-- toastr -->
+    <script src="/js/toastr.js"></script>
+
+    <!-- validation -->
+    <script src="/js/validation.js"></script>
+
+    <!-- lobilist -->
+    <script src="/js/lobilist.js"></script>
+
+    <!-- custom -->
+    <script src="/js/custom.js"></script>
+
 </body>
+
 </html>

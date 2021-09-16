@@ -253,7 +253,7 @@
             swal(
             'Ticket Cerrado',
             'El ticket se cerro correctamente',
-            'suuccess'
+            'success'
             )
         @endif
     </script>

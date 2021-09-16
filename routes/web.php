@@ -7,6 +7,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+
+
 
 
 
@@ -36,6 +39,25 @@ Route::get('/prueba', function () {
 });
 
 
+Route::get('/email/verify', function () {
+    return view('auth.verify');
+})->middleware('auth')->name('verification.notice');
+
+
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect()->route('dashboard');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    //return back()->with('message', 'Verification link sent!');
+    return redirect()->route('login')->with('success', 'Te hemos enviado un correo electornico para validar tu registró y que puedas acceder a nuestro sistema.');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
+
 
 
 
@@ -43,7 +65,6 @@ Route::get('/prueba', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 
@@ -52,8 +73,12 @@ Route::post('/process_payment', [App\Http\Controllers\PaymentController::class, 
 
 
 
-Route::prefix('/sistema')->middleware(['auth'])->group(function () {
+Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
+    // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', function () {
+        return redirect()->route('dashboard');
+    });
 
 
     Route::get('/dashboard', function () {
@@ -197,9 +222,21 @@ Route::prefix('/sistema')->middleware(['auth'])->group(function () {
             'password' => $password
         ];
 
-        Mail::to($request->get('email'))->send(new App\Mail\RegisterEmail($details));
+        // Mail::to($request->get('email'))->send(new App\Mail\RegisterEmail($details));
 
         //dd("Correo enviado");
+
+        $datos = [
+            'body' => 'Te has registrado en Programa Seguro de forma exitosa, tu contraseña es la siguiente: <b>'. $password .'</b>. Guárdala en un lugar seguro',
+            'actionText' => 'Da clic para iniciar sesión',
+            'url' => env('APP_URL').'login',
+            'thankyou' => 'No olvides contactarnos para cualquier duda.',
+            'subject' => 'Bienvenido a Programa Seguro'
+        ];
+
+        $u->notify(new App\Notifications\EmailWelcome($datos));
+
+
 
         DB::select('CALL createStepsRoutine(?)', array($u->id));
 
@@ -222,9 +259,20 @@ Route::prefix('/sistema')->middleware(['auth'])->group(function () {
 
     Route::get('/alta-usuario-sistema', function () {
 
-        $u = App\Models\User::all();
+        // $u = App\Models\User::all();
+        $u = App\Models\User::role(['Administrator', 'Agent'])->get();
         return view('layouts.altausurio', compact('u'));
     })->name('altaUsuarioSistema');
+
+
+    Route::get('/editar-usuario-del-sistema/{user}', function (App\Models\User $user) {
+        return view('layouts.editarUsuarioSistema', compact('user'));
+    })->name('editarUsuarioSistema');
+
+    Route::get('/editar-usuario/{user}', function (App\Models\User $user) {
+        return view('layouts.editarUsuario', compact('user'));
+    })->name('editarUsuario');
+
 
 
 
@@ -277,16 +325,19 @@ Route::prefix('/sistema')->middleware(['auth'])->group(function () {
         $u->password = $pass;
         $u->save();
 
-        $details = [
-            'nombre' => $request->get('name'),
-            'password' => $password
+        $datos = [
+            'body' => 'Te has registrado en Programa Seguro de forma exitosa, tu contraseña es la siguiente: <b>'. $password .'</b>. Guárdala en un lugar seguro',
+            'actionText' => 'Da clic para iniciar sesión',
+            'url' => env('APP_URL').'login',
+            'thankyou' => 'No olvides contactarnos para cualquier duda.',
+            'subject' => 'Acceso al sistema Programa Seguro'
         ];
 
-        Mail::to($request->get('email'))->send(new App\Mail\RegisterEmail($details));
+        $u->notify(new App\Notifications\EmailWelcome($datos));
 
         //dd("Correo enviado");
 
-        DB::select('CALL createStepsRoutine(?)', array($u->id));
+        // DB::select('CALL createStepsRoutine(?)', array($u->id));
 
         $u->assignRole($request->get('rol'));
 
@@ -298,5 +349,35 @@ Route::prefix('/sistema')->middleware(['auth'])->group(function () {
         $u->delete();
         return redirect()->back()->with('successDel');
     })->name('eliminarUsuario');
+
+
+    Route::post('/actualizar-datos-usuario-sistema/{user}', function (App\Models\User $user, Request $request) {
+        $u = $user;
+
+        $u->name = $request->get('name');
+        $u->middleName = $request->get('middleName');
+        $u->lastName = $request->get('lastName');
+        $u->email = $request->get('email');
+        $u->save();
+
+        return redirect()->route('altaUsuarioSistema')->with('successEdit', '');
+    })->name('actualizarInfoUsuarioSistema');
+
+    Route::post('/actualizar-datos-usuario/{user}', function (App\Models\User $user, Request $request) {
+        $u = $user;
+
+        $u->name = $request->get('name');
+        $u->middleName = $request->get('middleName');
+        $u->lastName = $request->get('lastName');
+        $u->email = $request->get('email');
+        $u->phone = $request->get('phone');
+        $u->birthday = $request->get('birthday');
+        $u->RFC = $request->get('RFC');
+        $u->NSS = $request->get('NSS');
+        $u->CURP = $request->get('CURP');
+        $u->save();
+
+        return redirect()->route('usuariosRegistrados')->with('successEdit', '');
+    })->name('actualizarInfoUsuario');
 
 });

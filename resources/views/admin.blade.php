@@ -20,6 +20,8 @@
     <!-- css -->
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
 
+    @stack('css')
+
 </head>
 
 <body>
@@ -319,7 +321,8 @@
     <script src="/js/toastr.js"></script>
 
     <!-- validation -->
-    <script src="/js/validation.js"></script>
+    {{-- <script src="/js/validation.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
 
     <!-- lobilist -->
     <script src="/js/lobilist.js"></script>

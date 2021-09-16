@@ -32,6 +32,7 @@
                                     <th>NSS</th>
                                     <th>RFC</th>
                                     <th>Estado</th>
+                                    <th>Acción</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,6 +59,8 @@
 
                                             @endif
                                         </td>
+                                        <td><a href="{{ route('editarUsuario', $u->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-book"></i>
+                                            Editar usuario</a></td>
                                     </tr>
 
                                 @endforeach
@@ -74,6 +77,7 @@
                                     <th>NSS</th>
                                     <th>RFC</th>
                                     <th>Estado</th>
+                                    <th>Acción</th>
                                 </tr>
                             </tfoot>
 
@@ -84,3 +88,15 @@
         </div>
     </div>
 @endsection
+
+@push('js')
+    <script>
+        @if (Session::has('successEdit'))
+            swal(
+                'Registro modificado con éxito',
+                'Los datos del usuario fueron modificados con éxito',
+                'success'
+            )
+        @endif
+    </script>
+@endpush

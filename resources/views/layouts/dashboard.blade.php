@@ -100,7 +100,7 @@
         swal(
         'Pago realizado con éxito',
         'Tu pago se ha realizado de forma correcta, ahora podras disfrutar de los servicios de Programa Seguro.',
-        'suuccess',
+        'success',
         'Cerrar'
         )
     @endif
