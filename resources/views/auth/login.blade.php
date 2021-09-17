@@ -104,6 +104,7 @@
                             </div> --}}
                                 <button class="button">Enviar datos <i class="fa fa-check"></i></button>
                                 <p class="mt-20 mb-0">¿Aun no tienes una cuenta? <a href="/register"> Crea una</a>
+                                <p>Olvidaste tus datos de inicio? <a href="/password/reset">Restablece tu contraseña </a></p>
                             </form>
                             </p>
                         </div>
