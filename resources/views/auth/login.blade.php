@@ -58,7 +58,7 @@
                     <div class="col-lg-4 col-md-6 login-fancy-bg bg"
                         style="background-image: url(https://demoswhy.com/programaseguro/wp-content/uploads/2021/07/490748-PH5A0U-472-e1626939846635.jpg);">
                         <div class="login-fancy">
-                            <h1 class="text-white mb-20">Programa Seguro</h1>
+                            <h1 class="text-white mb-20">PROGRAMA SEGURO</h1>
                             <p class="mb-20 text-white">Inicia sesión y disfruta de todos los beneficios de pertenecer a
                                 Programa Seguro.</p>
                             <ul class="list-unstyled  pos-bot pb-30">

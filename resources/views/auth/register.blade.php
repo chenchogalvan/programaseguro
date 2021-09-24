@@ -126,9 +126,9 @@
                     <div class="col-lg-4 offset-lg-1 col-md-6 login-fancy-bg bg parallax"
                         style="background-image: url(https://demoswhy.com/programaseguro/wp-content/uploads/2021/07/490748-PH5A0U-472-e1626939846635.jpg);">
                         <div class="login-fancy">
-                            <h1 class="text-white mb-20">Programa <br>seguro</h1>
+                            <h1 class="text-white mb-20">PROGRAMA <br>SEGURO</h1>
                             <p class="mb-20 text-white">Con Programa Seguro tu familia tendrá acceso a servicios de
-                                atención a la salud. Registrate para obtener todos los beneficios que ofrecemos.</p>
+                                atención a la salud. Regístrate para obtener todos los beneficios que ofrecemos.</p>
                             <ul class="list-unstyled pos-bot pb-30">
                                 {{-- <li class="list-inline-item"><a class="text-white" href="#"> Terms of Use</a> </li> --}}
                                 {{-- <li class="list-inline-item"><a class="text-white" href="#"> Privacy Policy</a></li> --}}
