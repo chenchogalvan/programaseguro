@@ -14,7 +14,7 @@
     $item = new MercadoPago\Item();
     $item->title = 'Mi producto';
     $item->quantity = 1;
-    $item->unit_price = 100;
+    $item->unit_price = 10;
     $preference->items = [$item];
 
     $preference->payment_methods = [
@@ -66,7 +66,7 @@
                             <p>Realiza tu pago para contar con todos los beneficios de Programa Seguro</p>
                         </div>
                         <div class="pricing-prize">
-                            <h2>$129 /<span> Mensuales</span> </h2>
+                            <h2>$1,500 /<span> Mensuales</span> </h2>
                         </div>
                         <div class="pricing-button">
                             <a class="button" href="{{ $preference->init_point }}">Realizar pago</a>
