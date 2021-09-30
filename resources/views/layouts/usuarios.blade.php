@@ -21,7 +21,7 @@
             <div class="card card-statistics h-100">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="datatable" class="table table-striped table-bordered p-0">
+                        <table id="myTable" class="table table-striped table-bordered p-0">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
@@ -59,8 +59,9 @@
 
                                             @endif
                                         </td>
-                                        <td><a href="{{ route('editarUsuario', $u->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-book"></i>
-                                            Editar usuario</a></td>
+                                        <td><a href="{{ route('editarUsuario', $u->id) }}"
+                                                class="btn btn-warning btn-sm"><i class="fa fa-book"></i>
+                                                Editar usuario</a></td>
                                     </tr>
 
                                 @endforeach
@@ -89,14 +90,43 @@
     </div>
 @endsection
 
+@push('css')
+    <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+@endpush
+
 @push('js')
     <script>
         @if (Session::has('successEdit'))
             swal(
-                'Registro modificado con éxito',
-                'Los datos del usuario fueron modificados con éxito',
-                'success'
+            'Registro modificado con éxito',
+            'Los datos del usuario fueron modificados con éxito',
+            'success'
             )
         @endif
     </script>
+
+    @push('js')
+        <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#myTable').DataTable({
+                    "language": {
+                        "lengthMenu": "Mostrando _MENU_ registros por pagina",
+                        "zeroRecords": "No hay registros",
+                        "info": "Pagina _PAGE_ de _PAGES_",
+                        "infoEmpty": "No hay registros",
+                        "infoFiltered": "(filtered from _MAX_ total records)",
+                        "search": "Buscar",
+                        "paginate": {
+                            "first": "Primero",
+                            "last": "Ultimo",
+                            "next": "Siguiente",
+                            "previous": "Anterior"
+                        },
+                    }
+                });
+            });
+        </script>
+    @endpush
+
 @endpush
