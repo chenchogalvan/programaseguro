@@ -249,6 +249,16 @@
 
 @push('js')
     <script>
+
+        @if (Session::has('successMessage'))
+        swal(
+            'Ticket registrado',
+            'Ticket de soporte registrado exitosamente. Nos pondremos en contacto contigo lo antes posible.',
+            'success'
+            )
+
+        @endif
+
         @if (Session::has('succes'))
             swal(
             'Ticket Cerrado',

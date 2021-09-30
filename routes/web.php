@@ -293,7 +293,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
         $n->mensaje = $request->get('mensaje');
         $n->save();
 
-        return redirect()->back()->with('success', '');
+        return redirect()->back()->with('successMessage', '');
 
 
     })->name('guardar.tiket');

@@ -168,13 +168,23 @@
                                     <input type="email" placeholder="Email*" id="email" class="form-control"
                                         name="email">
                                 </div>
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
 
 
                                 <div class="section-field mb-20">
-                                    <label class="mb-10" for="password">Contraseña* </label>
+                                    <label class="mb-10" for="password">Contraseña* <small>Minimo 5 caracteres</small></label>
                                     <input class="Password form-control" id="password" type="password"
                                         placeholder="Password" name="password">
                                 </div>
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                                 {{-- <a href="#" class="button">
                                     <span>Registrarse</span>
                                     <i class="fa fa-check"></i>

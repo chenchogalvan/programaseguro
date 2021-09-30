@@ -5,13 +5,13 @@
     <div class="page-title">
         <div class="row">
             <div class="col-sm-6">
-                <h4 class="mb-0"> Dashboard</h4>
+                <h4 class="mb-0"> Inicio</h4>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right">
                     <li class="breadcrumb-item"><a href="index.html" class="default-color">Inicio</a>
                     </li>
-                    <li class="breadcrumb-item active">Dashboard</li>
+                    <li class="breadcrumb-item active">Inicio</li>
                 </ol>
             </div>
         </div>
@@ -49,26 +49,26 @@
                 </div>
                 <div class="card-body text-left position-relative">
                     <div class="avatar-top">
-                        <img class="img-fluid w-25 rounded-circle " src="/images/team/13.jpg" alt="">
+                        <img style="visibility: hidden;" class="img-fluid w-25 rounded-circle " src="/images/team/13.jpg" alt="">
                     </div>
-                    <div class="row">
+                    <div class="row" style="margin-top: -35px;">
                         <div class="col-12 col-sm-12 mt-20">
-                            <b @if ($s[0]->datos == '1') style="text-decoration-line: line-through;" @else @endif>1. Completa tus datos personales</b>
+                            <b>@if ($s[0]->datos == '1') <i style="font-size: 20px;" class="fa fa-check-circle text-success" ></i>   @else @endif 1. Completa tus datos personales</b>
                             {{-- <h4 class="text-success mt-10">1582</h4> --}}
                         </div>
 
                         <div class="col-12 col-sm-12 mt-20">
-                            <b @if ($s[0]->pago == '1') style="text-decoration-line: line-through;" @else @endif>2. Realiza el pago de tu primera mensualidad</b>
+                            <b> @if ($s[0]->pago == '1') <i style="font-size: 20px;" class="fa fa-check-circle text-success" ></i> @else @endif 2. Realiza el pago de tu primera mensualidad</b>
                             {{-- <h4 class="text-success mt-10">1582</h4> --}}
                         </div>
 
                         <div class="col-12 col-sm-12 mt-20">
-                            <b @if ($s[0]->alta == '1') style="text-decoration-line: line-through;" @else @endif>3. Te damos de alta en el IMSS</b>
+                            <b>@if ($s[0]->alta == '1') <i style="font-size: 20px;" class="fa fa-check-circle text-success" ></i> @else @endif 3. Te damos de alta en el IMSS</b>
                             {{-- <h4 class="text-success mt-10">1582</h4> --}}
                         </div>
 
                         <div class="col-12 col-sm-12 mt-20">
-                            <b @if ($s[0]->alta == '1') style="text-decoration-line: line-through;" @else @endif>4. ¡Goza de los beneficios de Programa Seguro!
+                            <b> @if ($s[0]->alta == '1') <i style="font-size: 20px;" class="fa fa-check-circle text-success" ></i> @else @endif 4. ¡Goza de los beneficios de Programa Seguro!
                             </b>
                             {{-- <h4 class="text-success mt-10">1582</h4> --}}
                         </div>

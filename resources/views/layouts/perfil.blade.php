@@ -17,11 +17,11 @@
             <div class="col-lg-12 mb-30">
                 <div class="card">
                     <div class="card-body">
-                        <div class="user-bg" style="background: url(/images/user-bg.jpg);">
+                        <div class="user-bg" style="background: url(/images/userbg.jpg);">
                             <div class="user-info">
                                 <div class="row">
                                     <div class="col-lg-6 align-self-center">
-                                        <div class="user-dp"><img src="/images/team/11.jpg" alt=""></div>
+                                        <div class="user-dp"><img src="/images/team/user.png" alt=""></div>
                                         <div class="user-detail">
                                             <h2 class="name">{{ Auth::user()->name }}</h2>
                                             <p class="designation mb-0">- {{ Auth::user()->email }}</p>
@@ -52,8 +52,8 @@
                     <div class="card-body">
                         <h5 class="card-title"> Información</h5>
                         <div class="btn-group info-drop">
-                            <button type="button" class="dropdown-toggle-split text-muted" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false"><i class="ti-more"></i></button>
+                            {{-- <button type="button" class="dropdown-toggle-split text-muted" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false"><i class="ti-more"></i></button> --}}
                             <div class="dropdown-menu">
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter"><i
                                         class="text-success ti-pencil-alt"></i>
@@ -74,10 +74,10 @@
                                                 <p>Actualiza la información a continuación para actualizar los datos.</p>
                                             </div>
                                         </div>
-                                        <button type="button" class="close" data-dismiss="modal"
+                                        {{-- <button type="button" class="close" data-dismiss="modal"
                                             aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
-                                        </button>
+                                        </button> --}}
                                     </div>
                                     <div class="modal-body">
                                         <form method="POST" action="{{ route('actualizarInfo') }}">
@@ -93,7 +93,7 @@
                                                     value="{{ Auth::user()->phone }}">
                                             </div>
                                             <div class="form-group">
-                                                <label>N° Seguro</label>
+                                                <label>N° IMSS</label>
                                                 <input type="text" class="form-control" name="NSS"
                                                     value="{{ Auth::user()->NSS }}">
                                             </div>
@@ -158,7 +158,7 @@
                                 <li class="mb-15">
                                     <div class="media">
                                         <div class="media-body">
-                                            <h6 class="mt-0 ">{{ $t->asunto }}</h6>
+                                            <h6 class="mt-0 ">{{ $t->asunto }} - <small @if ($t->status == 'abierto') class="text-success" @elseif($t->status == 'cerrado') class="text-danger" @endif> {{ $t->status }}</small></h6>
 
                                             <p class="mt-10">{{ $t->mensaje }}</p>
                                         </div>
