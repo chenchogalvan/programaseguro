@@ -176,7 +176,7 @@
 
 
                                 <div class="section-field mb-20">
-                                    <label class="mb-10" for="password">Contraseña* <small>Minimo 5 caracteres</small></label>
+                                    <label class="mb-10" for="password">Contraseña* <small>Mínimo 5 caracteres</small></label>
                                     <input class="Password form-control" id="password" type="password"
                                         placeholder="Password" name="password">
                                 </div>

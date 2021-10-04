@@ -71,7 +71,7 @@ class UserController extends Controller
 
         $u->assignRole('user');
 
-        return redirect()->route('login')->with('success', 'Te has registrado de forma correcta en nuestro sistema de Programa seguro. Te hemos enviado un correo electornico para validar tu registró y que puedas acceder a nuestro sistema.');
+        return redirect()->route('login')->with('success', 'Te has registrado de forma correcta en nuestro sistema de Programa Seguro. Te hemos enviado un correo electrónico para validar tu registro y que puedas acceder a nuestro sistema.');
 
     }
 
