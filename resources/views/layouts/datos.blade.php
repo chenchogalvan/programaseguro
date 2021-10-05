@@ -37,7 +37,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">N° IMSS</label>
-                            <input type="text" class="form-control" id="NSS"
+                            <input type="text" class="form-control" id="NSS" min="11" max="11"
                                 aria-describedby="emailHelp" placeholder="" name="NSS" required>
                             <small id="emailHelp" class="form-text text-muted">Si desconoces tu N° del IMSS, da clic <a href="https://serviciosdigitales.imss.gob.mx/gestionAsegurados-web-externo/asignacionNSS;JSESSIONIDASEGEXTERNO=xbmya4uU6REpD9GD9f6lb0SK39a0Bg7fiRfyqeWqIc4V4xLkmF4W!-1399856305"
                                     target="_blank">aquí</a> para consultar.</small>
@@ -112,10 +112,10 @@
 
         $("#formulario").validate({
             messages: {
-                birthday: "Este campo es necesario",
-                RFC: "Este campo es necesario",
-                CURP: "Este campo es necesario",
-                NSS: "Este campo es necesario"
+                birthday: "Revisa que este campo tenta el formato correcto o no este vacío el campo.",
+                RFC: "Revisa que el formato sea el correcto o que no este vacío el campo.",
+                CURP: "Revisa que el formato sea el correcto o que no este vacío el campo.",
+                NSS: "Recuerda ingresar los 11 digitos de tu Seugro del IMSS o que no este vacío el campo."
             },
             rules: {
                 RFC: {

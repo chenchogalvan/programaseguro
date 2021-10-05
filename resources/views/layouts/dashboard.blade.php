@@ -99,7 +99,7 @@
     @if (Session::has('successPago'))
         swal(
         'Pago realizado con éxito',
-        'Tu pago se ha realizado de forma correcta, ahora podras disfrutar de los servicios de Programa Seguro.',
+        'Tu pago se ha realizado de forma correcta, ahora podrás disfrutar de los servicios de Programa Seguro.',
         'success',
         'Cerrar'
         )

@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Pago;
 
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -97,7 +98,8 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
     Route::get('/peril', function () {
         $t = App\Models\Tiket::where('user_id' , Auth::user()->id)->get();
-        return view('layouts.perfil', compact('t'));
+        $upago = Pago::where('user_id', Auth::user()->id)->latest('fechaVencimiento')->get();
+        return view('layouts.perfil', compact('t', 'upago'));
     })->name('perfil');
 
     Route::get('/pagos', function () {
@@ -118,8 +120,18 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
         $preference->items = array($item);
         $preference->save();
 
+        $upago = Pago::where('user_id', Auth::user()->id)->latest('fechaVencimiento')->get();
+        $pago = Pago::where('user_id', Auth::user()->id)->get();
 
-        return view('layouts.pagos', compact('preference'));
+
+        // if ($pago == null) {
+        //     $pago = 'nada';
+        // }
+
+        // return $pago;
+
+
+        return view('layouts.pagos', compact('preference', 'pago', 'upago'));
     })->name('pagos');
 
     Route::get('/pagos/status', function (Request $request) {
@@ -292,6 +304,20 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
         $n->asunto = $request->get('asunto');
         $n->mensaje = $request->get('mensaje');
         $n->save();
+
+
+
+        // $data = [
+        //     'body' => 'Se ha generado un nuevo ticket en el sistema de Programa Seguro',
+        //     'actionText' => 'Da clic para iniciar sesión',
+        //     'url' => env('APP_URL').'/sistema/soporte',
+        //     'thankyou' => 'Saludos.',
+        //     'subject' => 'Ticket Programa Seguro'
+        // ];
+
+        // $users->notify(new App\Notifications\TicketNotify($data))->to('victor.zambrano@belhaus.mx');
+
+        Mail::to('victor.zambrano@belhaus.mx')->send(new \App\Mail\RegisterEmail());
 
         return redirect()->back()->with('successMessage', '');
 

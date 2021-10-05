@@ -63,7 +63,12 @@
                     <div class="pricing-top">
                         <div class="pricing-title">
                             <h3 class="mb-15">Pago mensual </h3>
-                            <p>Realiza tu pago para contar con todos los beneficios de Programa Seguro</p>
+                            @if (count($upago) < 1)
+                                <p>Realiza tu pago para contar con todos los beneficios de Programa Seguro</p>
+                            @else
+                                <p>Tu proxima fecha de vencimiento es el día <b>{{ \Carbon\Carbon::parse($upago[0]->fechaVencimiento)->format('d M, Y') }}</b></p>
+                            @endif
+
                         </div>
                         <div class="pricing-prize">
                             <h2>$1,500 /<span> Mensuales</span> </h2>
@@ -71,6 +76,48 @@
                         <div class="pricing-button">
                             <a class="button" href="{{ $preference->init_point }}">Realizar pago</a>
                             {{-- <a href="#" class="button cho-container"></a> --}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-8 mb-60">
+                <div class="card card-statistics h-100">
+                    <div class="card-body">
+                        <h5 class="card-title border-0 pb-0">Lista de pagos y estatus</h5>
+                        <div class="table-responsive">
+                            <table id="datatable" class="table table-striped table-bordered p-0">
+                                <thead>
+                                    <tr>
+                                        <th>Estatus</th>
+                                        <th>Id del pago</th>
+                                        <th>FEcha de vencimiento</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach ($pago as $p)
+
+                                        <tr>
+                                            <td>@if ($p->status == 'approved')
+                                                <span class="badge bg-success float-end mt-1 text-white">Aprovado</span>
+
+                                            @else
+                                                <td>
+                                                    {{ $p->status }}
+                                                </td>
+                                            @endif</td>
+                                            <td>{{ $p->payment_id }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($upago[0]->fechaVencimiento)->format('d M, Y') }}</td>
+
+                                        </tr>
+
+                                    @endforeach
+
+
+                                </tbody>
+
+                            </table>
                         </div>
                     </div>
                 </div>

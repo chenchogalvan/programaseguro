@@ -40,7 +40,7 @@
                 <div class="card card-statistics mb-30">
                     <div class="card-body">
                         <h5 class="card-title">Formulario de soporte</h5>
-                        <form method="POST" action="{{ route('guardar.tiket') }}">
+                        <form  method="POST" action="{{ route('guardar.tiket') }}">
                             @csrf
                             <div class="form-group">
                                 <label for="asunto">Selecciona el asunto</label>
@@ -71,7 +71,7 @@
                 <div class="card card-statistics mb-30">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="datatable" class="table table-striped table-bordered p-0">
+                            <table id="myTable" class="table table-striped table-bordered p-0">
                                 <thead>
                                     <tr>
                                         <th>ID</th>

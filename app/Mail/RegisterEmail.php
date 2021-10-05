@@ -17,12 +17,11 @@ class RegisterEmail extends Mailable
      * @return void
      */
 
-    public $details;
 
 
-    public function __construct($details)
+    public function __construct()
     {
-        $this->details = $details;
+
     }
 
     /**
@@ -32,7 +31,7 @@ class RegisterEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Registro completo | Programa Seguro')
-                    ->view('emails.RegistroMail');
+        return $this->subject('Ticket de soporte | Programa Seguro')
+                    ->view('emails.ticketEmail');
     }
 }

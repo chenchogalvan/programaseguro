@@ -51,6 +51,7 @@
                 <div class="card mb-30 about-me">
                     <div class="card-body">
                         <h5 class="card-title"> Información</h5>
+
                         <div class="btn-group info-drop">
                             {{-- <button type="button" class="dropdown-toggle-split text-muted" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"><i class="ti-more"></i></button> --}}
@@ -71,7 +72,7 @@
                                             <div class="mb-30">
                                                 <h6>{{ Auth::user()->name }}</h6>
                                                 <h2>Actualizar datos</h2>
-                                                <p>Actualiza la información a continuación para actualizar los datos.</p>
+                                                <p>En caso de querer actualizar otro dato, favor de mandar un ticket.</p>
                                             </div>
                                         </div>
                                         {{-- <button type="button" class="close" data-dismiss="modal"
@@ -87,7 +88,7 @@
                                                 <input type="email" class="form-control" name="email"
                                                     value="{{ Auth::user()->email }}">
                                             </div>
-                                            <div class="form-group">
+                                            {{-- <div class="form-group">
                                                 <label>Teléfono</label>
                                                 <input type="text" class="form-control" name="phone"
                                                     value="{{ Auth::user()->phone }}">
@@ -106,7 +107,7 @@
                                                 <label>CURP</label>
                                                 <input type="text" class="form-control" name="CURP"
                                                     value="{{ Auth::user()->CURP }}">
-                                            </div>
+                                            </div> --}}
                                             <button type="submit" class="btn btn-primary">Guardar datos</button>
                                         </form>
                                     </div>
@@ -132,6 +133,16 @@
                             </li>
                             <li class="list-item"><span class="text-info ti-star"></span><b>CURP:</b>
                                 {{ Auth::user()->CURP }}
+                            </li>
+
+
+
+
+
+                            <li>
+                                <fieldset @if ($upago->count() > 0)   @else disabled="on" @endif >
+                                    <button class="btn btn-success d-grid" data-toggle="modal" data-target="#exampleModalCenter">@if ($upago->count() > 0) Editar correo  @else Debes realizar el pago para poder editar tu correo @endif</button>
+                                </fieldset>
                             </li>
 
                         </ul>
