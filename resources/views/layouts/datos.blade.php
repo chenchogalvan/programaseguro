@@ -5,13 +5,13 @@
     <div class="page-title">
         <div class="row">
             <div class="col-sm-6">
-                <h4 class="mb-0"> Dashboard</h4>
+                <h4 class="mb-0"> Completar datos</h4>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right">
                     <li class="breadcrumb-item"><a href="index.html" class="default-color">Inicio</a>
                     </li>
-                    <li class="breadcrumb-item active">Dashboard</li>
+                    <li class="breadcrumb-item active">Completar datos</li>
                 </ol>
             </div>
         </div>
@@ -37,7 +37,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">N° IMSS</label>
-                            <input type="text" class="form-control" id="NSS" min="11" max="11"
+                            <input type="text" class="form-control" id="NSS"
                                 aria-describedby="emailHelp" placeholder="" name="NSS" required>
                             <small id="emailHelp" class="form-text text-muted">Si desconoces tu N° del IMSS, da clic <a href="https://serviciosdigitales.imss.gob.mx/gestionAsegurados-web-externo/asignacionNSS;JSESSIONIDASEGEXTERNO=xbmya4uU6REpD9GD9f6lb0SK39a0Bg7fiRfyqeWqIc4V4xLkmF4W!-1399856305"
                                     target="_blank">aquí</a> para consultar.</small>
@@ -119,11 +119,17 @@
             },
             rules: {
                 RFC: {
-                    RFC: true
+                    RFC: true,
+                    minlength: 13,
+                    maxlength: 13
                 },
                 CURP: {
                     CURP: true
                 },
+                NSS:{
+                    minlength: 11,
+                    maxlength: 11
+                }
             },
             errorElement: "em",
             errorPlacement: function(error, element) {

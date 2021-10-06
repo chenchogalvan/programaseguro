@@ -51,7 +51,7 @@
                     <div class="avatar-top">
                         <img style="visibility: hidden;" class="img-fluid w-25 rounded-circle " src="/images/team/13.jpg" alt="">
                     </div>
-                    <div class="row" style="margin-top: -35px;">
+                    <div class="row" style="margin-top: -15px;">
                         <div class="col-12 col-sm-12 mt-20">
                             <b>@if ($s[0]->datos == '1') <i style="font-size: 20px;" class="fa fa-check-circle text-success" ></i>   @else @endif 1. Completa tus datos personales</b>
                             {{-- <h4 class="text-success mt-10">1582</h4> --}}
