@@ -99,11 +99,11 @@ class UserController extends Controller
 
         $u = User::find(Auth::user()->id);
 
-        $u->email = $request->get('email');
-        // $u->phone = $request->get('phone');
-        // $u->RFC = $request->get('RFC');
-        // $u->NSS = $request->get('NSS');
-        // $u->CURP = $request->get('CURP');
+        // $u->email = $request->get('email');
+        $u->phone = $request->get('phone');
+        $u->RFC = $request->get('RFC');
+        $u->NSS = $request->get('NSS');
+        $u->CURP = $request->get('CURP');
         $u->save();
 
 
