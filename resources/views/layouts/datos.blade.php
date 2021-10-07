@@ -118,7 +118,7 @@
                 birthday: "Revisa que el formato sea el correcto o no esté vacío.",
                 RFC: "Revisa que el formato sea el correcto o que no esté vacío.",
                 CURP: "Revisa que el formato sea el correcto o que no esté vacío.",
-                NSS: "Recuerda ingresar los 11 dígitos de tu seguro del IMSS o que no esté vacío."
+                NSS: "Recuerda ingresar los 11 dígitos de tu seguro del IMSS."
             },
             rules: {
                 RFC: {
