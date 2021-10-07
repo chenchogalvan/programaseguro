@@ -112,10 +112,10 @@
 
         $("#formulario").validate({
             messages: {
-                birthday: "Revisa que este campo tenta el formato correcto o no este vacío el campo.",
-                RFC: "Revisa que el formato sea el correcto o que no este vacío el campo.",
-                CURP: "Revisa que el formato sea el correcto o que no este vacío el campo.",
-                NSS: "Recuerda ingresar los 11 digitos de tu Seugro del IMSS o que no este vacío el campo."
+                birthday: "Revisa que esté campo tenta el formato correcto o no este vacío el campo.",
+                RFC: "Revisa que el formato sea el correcto o que no esté vacío el campo.",
+                CURP: "Revisa que el formato sea el correcto o que no esté vacío el campo.",
+                NSS: "Recuerda ingresar los 11 digitos de tu Seugro del IMSS o que no esté vacío el campo."
             },
             rules: {
                 RFC: {
