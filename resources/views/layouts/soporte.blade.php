@@ -11,13 +11,13 @@
         <div class="page-title">
             <div class="row">
                 <div class="col-sm-6">
-                    <h4 class="mb-0"> Soporte</h4>
+                    <h4 class="mb-0"> Ayuda</h4>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right">
                         <li class="breadcrumb-item"><a href="#" class="default-color">Inicio</a>
                         </li>
-                        <li class="breadcrumb-item active">Soporte</li>
+                        <li class="breadcrumb-item active">Ayuda</li>
                     </ol>
                 </div>
             </div>
@@ -39,7 +39,7 @@
             <div class="col-xl-4 mb-30">
                 <div class="card card-statistics mb-30">
                     <div class="card-body">
-                        <h5 class="card-title">Formulario de soporte</h5>
+                        <h5 class="card-title">Formulario de ayuda</h5>
                         <form  method="POST" action="{{ route('guardar.tiket') }}">
                             @csrf
                             <div class="form-group">
@@ -48,6 +48,8 @@
                                     <option value="Problema al realizar el pago">Problema al realizar el pago</option>
                                     <option value="Problema al Completar mis datos">Problema al Completar mis datos</option>
                                     <option value="No puedo actualizar mi información">No puedo actualizar mi información
+                                    </option>
+                                    <option value="Actualizar información">Actualizar información
                                     </option>
                                     <option value="Quiero darme de baja">Quiero darme de baja</option>
                                     <option value="Otra">Otra</option>

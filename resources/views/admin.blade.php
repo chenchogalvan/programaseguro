@@ -201,7 +201,7 @@
 
                             <li>
                                 <a href="{{ route('soporte') }}"><i class="ti-comments"></i><span
-                                        class="right-nav-text">Soporte
+                                        class="right-nav-text">Ayuda
                                     </span></a>
                             </li>
                             <li>
@@ -235,7 +235,7 @@
 
                             <li>
                                 <a href="{{ route('soporte') }}"><i class="ti-comments"></i><span
-                                        class="right-nav-text">Soporte
+                                        class="right-nav-text">Ayuda
                                     </span></a>
                             </li>
 
@@ -254,7 +254,7 @@
                             </li>
 
                             <li>
-                                <a href="{{ route('soporte') }}"><i class="ti-comments"></i><span class="right-nav-text">Soporte
+                                <a href="{{ route('soporte') }}"><i class="ti-comments"></i><span class="right-nav-text">Ayuda
                                     </span></a>
                             </li>
 

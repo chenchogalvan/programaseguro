@@ -94,7 +94,7 @@
                                                 <div class="form-group">
                                                     <label>Teléfono</label>
                                                     <input type="text" class="form-control" name="phone"
-                                                        value="{{ Auth::user()->phone }}">
+                                                        value="{{ Auth::user()->phone }}" required>
                                                 </div>
 
 
@@ -102,23 +102,23 @@
                                                 <div class="form-group">
                                                     <label>Teléfono</label>
                                                     <input type="text" class="form-control" name="phone"
-                                                        value="{{ Auth::user()->phone }}">
+                                                        value="{{ Auth::user()->phone }}" required>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label>N° IMSS</label>
                                                     <input type="text" class="form-control" name="NSS"
-                                                        value="{{ Auth::user()->NSS }}">
+                                                        value="{{ Auth::user()->NSS }}" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>RFC</label>
-                                                    <input type="text" class="form-control" name="RFC"
-                                                        value="{{ Auth::user()->RFC }}">
+                                                    <input type="text" name="RFC" class="form-control" name="RFC"
+                                                        value="{{ Auth::user()->RFC }}" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>CURP</label>
                                                     <input type="text" class="form-control" name="CURP"
-                                                        value="{{ Auth::user()->CURP }}">
+                                                        value="{{ Auth::user()->CURP }}" required>
                                                 </div>
                                             @endif
 
@@ -168,7 +168,7 @@
             <div class="col-xl-8 mb-30">
                 <div class="card tickets">
                     <div class="card-body">
-                        <h5 class="card-title"> Tickets</h5>
+                        <h5 class="card-title"> Tickets de ayuda</h5>
                         <!-- action group -->
                         <div class="btn-group info-drop">
                             <button type="button" class="dropdown-toggle-split text-muted" data-toggle="dropdown"
@@ -207,3 +207,92 @@
     </div>
 @endsection
 
+
+@push('js')
+
+<script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <script>
+        !function(a){a.fn.datepicker.dates.es={days:["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"],daysShort:["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"],daysMin:["Do","Lu","Ma","Mi","Ju","Vi","Sa"],months:["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],monthsShort:["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"],today:"Hoy",monthsTitle:"Meses",clear:"Borrar",weekStart:1,format:"dd/mm/yyyy"}}(jQuery);
+    </script>
+
+
+    <script>
+        $.validator.addMethod("RFC", function(value, element) {
+            if (value !== '') {
+                var patt = new RegExp("^[A-Z,Ñ,&]{3,4}[0-9]{2}[0-1][0-9][0-3][0-9][A-Z,0-9]?[A-Z,0-9]?[0-9,A-Z]?$");
+                return patt.test(value);
+            } else {
+                return false;
+            }
+        }, "Ingrese un RFC valido");
+        $.validator.addMethod("CURP", function(value, element) {
+            if (value !== '') {
+                var patt = new RegExp(
+                    "^[A-Z][A,E,I,O,U,X][A-Z]{2}[0-9]{2}[0-1][0-9][0-3][0-9][M,H][A-Z]{2}[B,C,D,F,G,H,J,K,L,M,N,Ñ,P,Q,R,S,T,V,W,X,Y,Z]{3}[0-9,A-Z][0-9]$"
+                    );
+                return patt.test(value);
+            } else {
+                return false;
+            }
+        }, "Ingrese una CURP valido");
+
+
+        $("#formulario").validate({
+            messages: {
+                birthday: "Revisa que el formato sea el correcto o no esté vacío.",
+                RFC: "Revisa que el formato sea el correcto o que no esté vacío.",
+                CURP: "Revisa que el formato sea el correcto o que no esté vacío.",
+                NSS: "Recuerda ingresar los 11 dígitos de tu seguro del IMSS."
+            },
+            rules: {
+                RFC: {
+                    RFC: true,
+                    minlength: 13,
+                    maxlength: 13
+                },
+                CURP: {
+                    CURP: true
+                },
+                NSS:{
+                    minlength: 11,
+                    maxlength: 11
+                }
+            },
+            errorElement: "em",
+            errorPlacement: function(error, element) {
+                // Add the `help-block` class to the error element
+                error.addClass("help-block");
+
+                if (element.prop("type") === "checkbox") {
+                    error.insertAfter(element.parent("label"));
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).parents(".col-sm-5").addClass("has-error").removeClass("has-success");
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).parents(".col-sm-5").addClass("has-success").removeClass("has-error");
+            }
+        });
+
+
+
+
+
+        $(document).ready(function() {
+            var date_input = $('input[name="birthday"]'); //our date input has the name "date"
+            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+            var options = {
+                format: 'dd/mm/yyyy',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+                language: 'es',
+            };
+            date_input.datepicker(options);
+        })
+    </script>
+@endpush
