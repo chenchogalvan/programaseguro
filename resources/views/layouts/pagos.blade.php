@@ -12,7 +12,7 @@
 
     // Crea un ítem en la preferencia
     $item = new MercadoPago\Item();
-    $item->title = 'Mi producto';
+    $item->title = 'Servicio de alta del IMSS - Programa Seguro';
     $item->quantity = 1;
     $item->unit_price = 10;
     $preference->items = [$item];
@@ -100,12 +100,10 @@
 
                                         <tr>
                                             <td>@if ($p->status == 'approved')
-                                                <span class="badge bg-success float-end mt-1 text-white">Aprovado</span>
+                                                <span class="badge b0g-success float-end mt-1 text-white">Aprovado</span>
 
-                                            @else
-                                                <td>
-                                                    {{ $p->status }}
-                                                </td>
+                                            @elseif ($p->status == 'pending')
+                                                <span class="badge bg-warning float-end mt-1 text-white">   Pendiente </span>
                                             @endif</td>
                                             <td>{{ $p->payment_id }}</td>
                                             <td>{{ \Carbon\Carbon::parse($upago[0]->fechaVencimiento)->format('d M, Y') }}</td>
@@ -177,9 +175,9 @@
         @endif
 
         // Agrega credenciales de SDK
-        const mp = new MercadoPago("{{ config('services.mercadopago.key') }}", {
-            locale: 'es-MX'
-        });
+        // const mp = new MercadoPago("{{ config('services.mercadopago.key') }}", {
+        //     locale: 'es-MX'
+        // });
 
         // // Inicializa el checkout
         // mp.checkout({

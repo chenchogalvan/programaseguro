@@ -83,31 +83,46 @@
                                     <div class="modal-body">
                                         <form method="POST" action="{{ route('actualizarInfo') }}">
                                             @csrf
-                                            <div class="form-group">
+                                            {{-- <div class="form-group">
                                                 <label>Correo</label>
                                                 <input type="email" class="form-control" name="email"
                                                     value="{{ Auth::user()->email }}">
-                                            </div>
-                                            {{-- <div class="form-group">
-                                                <label>Teléfono</label>
-                                                <input type="text" class="form-control" name="phone"
-                                                    value="{{ Auth::user()->phone }}">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>N° IMSS</label>
-                                                <input type="text" class="form-control" name="NSS"
-                                                    value="{{ Auth::user()->NSS }}">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>RFC</label>
-                                                <input type="text" class="form-control" name="RFC"
-                                                    value="{{ Auth::user()->RFC }}">
-                                            </div>
-                                            <div class="form-group">
-                                                <label>CURP</label>
-                                                <input type="text" class="form-control" name="CURP"
-                                                    value="{{ Auth::user()->CURP }}">
                                             </div> --}}
+
+                                            @if ($upago->count() > 0)
+
+                                                <div class="form-group">
+                                                    <label>Teléfono</label>
+                                                    <input type="text" class="form-control" name="phone"
+                                                        value="{{ Auth::user()->phone }}">
+                                                </div>
+
+
+                                            @else
+                                                <div class="form-group">
+                                                    <label>Teléfono</label>
+                                                    <input type="text" class="form-control" name="phone"
+                                                        value="{{ Auth::user()->phone }}">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>N° IMSS</label>
+                                                    <input type="text" class="form-control" name="NSS"
+                                                        value="{{ Auth::user()->NSS }}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>RFC</label>
+                                                    <input type="text" class="form-control" name="RFC"
+                                                        value="{{ Auth::user()->RFC }}">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>CURP</label>
+                                                    <input type="text" class="form-control" name="CURP"
+                                                        value="{{ Auth::user()->CURP }}">
+                                                </div>
+                                            @endif
+
+
                                             <button type="submit" class="btn btn-primary">Guardar datos</button>
                                         </form>
                                     </div>
@@ -140,8 +155,8 @@
 
 
                             <li>
-                                <fieldset @if ($upago->count() > 0)   @else disabled="on" @endif >
-                                    <button class="btn btn-success d-grid" data-toggle="modal" data-target="#exampleModalCenter">@if ($upago->count() > 0) Editar correo  @else Debes realizar el pago para poder editar tu correo @endif</button>
+                                <fieldset>
+                                    <button class="btn btn-success d-grid" data-toggle="modal" data-target="#exampleModalCenter">Editar información</button>
                                 </fieldset>
                             </li>
 

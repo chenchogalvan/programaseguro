@@ -256,20 +256,22 @@
 @push('js')
     <script>
         @if (Session::has('successMessage'))
-            swal(
-            'Ticket registrado',
-            'Ticket de soporte registrado exitosamente. Nos pondremos en contacto contigo lo antes posible.',
-            'success'
-            )
+        Swal.fire({
+            title: 'Ticket registrado',
+            text: 'Ticket de soporte registrado exitosamente. Nos pondremos en contacto contigo lo antes posible.',
+            icon: 'success',
+            confirmButtonText: 'Cerrar'
+        })
 
         @endif
 
         @if (Session::has('succes'))
-            swal(
-            'Ticket Cerrado',
-            'El ticket se cerro correctamente',
-            'success'
-            )
+        Swal.fire({
+            title: 'Ticket Cerrado',
+            text: 'El ticket se cerro correctamente',
+            icon: 'success',
+            confirmButtonText: 'Cerrar'
+        })
         @endif
     </script>
 

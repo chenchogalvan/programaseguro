@@ -315,7 +315,7 @@
     <script src="/js/datepicker.js"></script>
 
     <!-- sweetalert2 -->
-    <script src="/js/sweetalert2.js"></script>
+    {{-- <script src="/js/sweetalert2.js"></script> --}}
 
     <!-- toastr -->
     <script src="/js/toastr.js"></script>
@@ -329,6 +329,10 @@
 
     <!-- custom -->
     <script src="/js/custom.js"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     @stack('js')
 
