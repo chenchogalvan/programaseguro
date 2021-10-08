@@ -171,6 +171,11 @@
 
         $("#formulario").validate({
             messages: {
+                name: "Este campo es obligatorio.",
+                middleName: "Este campo es obligatorio.",
+                lastName: "Este campo es obligatorio.",
+                email: "Este campo es obligatorio.",
+                phone: "Este campo es obligatorio.",
                 birthday: "Revisa que el formato sea el correcto o no esté vacío.",
                 RFC: "Revisa que el formato sea el correcto o que no esté vacío.",
                 CURP: "Revisa que el formato sea el correcto o que no esté vacío.",
