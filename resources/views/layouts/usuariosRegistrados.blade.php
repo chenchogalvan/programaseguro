@@ -111,14 +111,15 @@
                                         <th>Estatus del pago</th>
                                         <th>Tipo de pago</th>
                                         <th>Id del pago (MP)</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($u as $u)
+                                    {{-- @foreach ($u as $u)
 
                                         <tr>
-                                            <td>{{ $u->name . ' ' . $u->middleName . ' ' . $u->lastName }}</td>
+                                            <td>{{ $u->name . ' ' . $u->middleName . ' ' . $u->lastName.' || '.$u->id }}</td>
                                             @foreach ($u->pago as $p)
                                                 <td>{{ date('d-m-Y', strtotime($p->fechaVencimiento)) }}</td>
                                                 <td>{{ $p->status }}</td>
@@ -127,19 +128,44 @@
                                             @endforeach
                                         </tr>
 
+                                    @endforeach --}}
+
+                                    @foreach ($p as $p)
+                                        <tr>
+                                            <td>{{ $p->user['name'] . ' ' . $p->user['middleName'] . ' ' . $p->user['lastName'] }}
+                                            </td>
+                                            <td>{{ $p->fechaVencimiento }}</td>
+                                            <td>@if ($p->status == 'approved')<span class="badge bg-success float-end mt-1 text-white">Aprovado</span>@elseif ($p->status == 'pending')<span class="badge bg-warning float-end mt-1 text-white">   Pendiente </span>@elseif ($p->status == 'failure')<span class="badge bg-danger float-end mt-1 text-white">   Fallido/Cancelado </span>@endif</td>
+                                            <td>{{ $p->payment_type }}</td>
+                                            <td>{{ $p->payment_id }}</td>
+                                            <td>
+
+                                                @if ($p->status == 'pending' && $p->fechaVencimiento >= Carbon\Carbon::now())
+                                                    <a href="{{ route('modificarPago', ['aprobar', $p]) }}"
+                                                        class="btn btn-success">Aprobar pago</a>
+
+                                                    <a href="{{ route('modificarPago', ['cancelar', $p]) }}"
+                                                        class="btn btn-danger">Cancelar pago</a>
+
+                                                @elseif ($p->status == 'failure')
+                                                    <a href="{{ route('modificarPago', ['aprobar', $p]) }}"
+                                                        class="btn btn-success">Aprobar pago</a>
+
+
+                                                @elseif ($p->status == 'approved')
+                                                    <a href="{{ route('modificarPago', ['cancelar', $p]) }}"
+                                                        class="btn btn-danger">Cancelar pago</a>
+
+                                                @endif
+                                            </td>
+                                        </tr>
+
+
                                     @endforeach
 
 
                                 </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <th>Nombre</th>
-                                        <th>Fecha de vencimiento</th>
-                                        <th>Estatus del pago</th>
-                                        <th>Tipo de pago</th>
-                                        <th>Id del pago (MP)</th>
-                                    </tr>
-                                </tfoot>
+
 
                             </table>
                         </div>
@@ -151,3 +177,17 @@
 @endsection
 
 
+@push('js')
+    <script>
+        @if (Session::has('modify'))
+            Swal.fire({
+            title: 'Modificación realizada',
+            html: '{!! Session::get('modify') !!}',
+            icon: 'success',
+            confirmButtonText: 'Cerrar'
+            })
+        @endif
+
+
+    </script>
+@endpush

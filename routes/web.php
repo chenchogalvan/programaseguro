@@ -196,9 +196,11 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
     })->name('usuariosRegistrados');
 
     Route::get('/pagos-usuarios', function () {
-        $p = App\Models\Pago::find(1);
-        $u = App\Models\User::role('User')->get();
-        return view('layouts.usuariosRegistrados', compact('u'));
+        $p = App\Models\Pago::with('user')->orderBy('fechaVencimiento', 'asc')->get();
+        $u = App\Models\User::role('User')->with('pago')->get();
+
+        // return $p;
+        return view('layouts.usuariosRegistrados', compact('p'));
     })->name('pagoUsuarios');
 
     Route::get('/alta-usuarios', function () {
@@ -427,5 +429,84 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
         return redirect()->route('usuariosRegistrados')->with('successEdit', '');
     })->name('actualizarInfoUsuario');
+
+
+
+
+
+    //Consulta de pagos vigentes
+
+    Route::get('/lista-vigentes', function () {
+
+        $pagos = App\Models\Pago::with('user')
+                    ->where('fechaVencimiento', '>=', Carbon::now())
+                    ->where('status', '=', 'approved')
+                    ->orderBy('fechaVencimiento', 'asc')
+                    ->groupBy('user_id')
+                    ->get();
+
+
+
+        foreach ($pagos as $p) {
+            $data[] = [
+                'id' => $p->id,
+                'nombre' => $p->user->name.' '.$p->user->middleName.' '.$p->user->lastName,
+                'email' => $p->user->email,
+                'phone' => $p->user->phone,
+                'birthday' => $p->user->birthday,
+                'CURP' => $p->user->CURP,
+                'NSS' => $p->user->NSS,
+                'RFC' => $p->user->RFC,
+                'fechaVencimiento' => $p->fechaVencimiento
+            ];
+        }
+
+
+        $export = new App\Exports\PagosExport($data);
+
+
+
+
+        return Excel::download($export, 'lista.xlsx');
+    })->name('listaVigentes');
+
+    Route::get('/pagos-vencidos', function () {
+        $pagos = App\Models\Pago::with('user')
+                    ->where('fechaVencimiento', '<', Carbon::now())
+                    ->orderBy('fechaVencimiento', 'asc')
+                    ->groupBy('user_id')
+                    ->get();
+
+        return $pagos;
+    });
+
+
+    //Cancelar pagos
+
+    Route::get('/modificar-pago/{status}/{pago}', function ($status, App\Models\Pago $pago) {
+
+
+
+        if ($status == 'aprobar') {
+
+
+            $p = $pago;
+            $p->status = 'approved';
+            $p->fechaVencimiento = Carbon::now()->addMonths(1);
+            $p->save();
+
+            return redirect()->back()->with('modify', 'Se modifico el registro de <b>'.$pago->user->name.' '.$pago->user->middleName.' '.$pago->user->lastName.'</b> con el id de pago <b>'.$pago->payment_id.'</b> a <b>aprobado</b> de forma exitosa.');
+        }else if($status == 'cancelar'){
+
+
+            $p = $pago;
+            $p->status = 'failure';
+            $p->save();
+
+            return redirect()->back()->with('modify', 'Se modifico el registro de <b>'.$pago->user->name.' '.$pago->user->middleName.' '.$pago->user->lastName.'</b> con el id de pago <b>'.$pago->payment_id.'</b> a <b>cancelado</b> de forma exitosa.');
+        }
+
+
+    })->name('modificarPago');
 
 });

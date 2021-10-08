@@ -182,30 +182,35 @@
                             <li class="mt-10 mb-10 text-muted pl-4 font-medium menu-title">Opciones </li>
 
                             <li>
-                                <a href="{{ route('usuariosRegistrados') }}"><i class="ti-comments"></i><span
+                                <a href="{{ route('usuariosRegistrados') }}"><i class="fa fa-address-book-o"></i><span
                                     class="right-nav-text">Lista de registros
                                 </span></a>
                             </li>
 
                             <li>
-                                <a href="{{ route('pagoUsuarios') }}"><i class="ti-comments"></i><span
+                                <a href="{{ route('pagoUsuarios') }}"><i class="fa fa-book"></i><span
                                         class="right-nav-text">Reporte de pagos
                                     </span></a>
                             </li>
 
                             <li>
-                                <a href="{{ route('altausuarios') }}"><i class="ti-comments"></i><span
+                                <a href="{{ route('altausuarios') }}"><i class="fa fa-wpforms"></i><span
                                         class="right-nav-text">Formato de alta
                                     </span></a>
                             </li>
 
                             <li>
-                                <a href="{{ route('soporte') }}"><i class="ti-comments"></i><span
+                                <a href="{{ route('soporte') }}"><i class="fa fa-question-circle-o"></i><span
                                         class="right-nav-text">Ayuda
                                     </span></a>
                             </li>
                             <li>
-                                <a href="{{ route('altaUsuarioSistema') }}"><i class="ti-comments"></i><span
+                                <a href="{{ route('listaVigentes') }}"><i class="fa fa-cloud-download"></i><span
+                                    class="right-nav-text">Descargar formato
+                                </span></a>
+                            </li>
+                            <li>
+                                <a href="{{ route('altaUsuarioSistema') }}"><i class="fa fa-users"></i><span
                                         class="right-nav-text">Dar de alta usuarios
                                     </span></a>
                             </li>
@@ -216,25 +221,25 @@
                             <li class="mt-10 mb-10 text-muted pl-4 font-medium menu-title">Opciones </li>
 
                             <li>
-                                <a href="{{ route('usuariosRegistrados') }}"><i class="ti-comments"></i><span
+                                <a href="{{ route('usuariosRegistrados') }}"><i class="fa fa-address-book-o"></i><span
                                     class="right-nav-text">Lista de registros
                                 </span></a>
                             </li>
 
                             <li>
-                                <a href="{{ route('pagoUsuarios') }}"><i class="ti-comments"></i><span
+                                <a href="{{ route('pagoUsuarios') }}"><i class="fa fa-book"></i><span
                                         class="right-nav-text">Reporte de pagos
                                     </span></a>
                             </li>
 
                             <li>
-                                <a href="{{ route('altausuarios') }}"><i class="ti-comments"></i><span
+                                <a href="{{ route('altausuarios') }}"><i class="fa fa-wpforms"></i><span
                                         class="right-nav-text">Formato de alta
                                     </span></a>
                             </li>
 
                             <li>
-                                <a href="{{ route('soporte') }}"><i class="ti-comments"></i><span
+                                <a href="{{ route('soporte') }}"><i class="fa fa-question-circle-o"></i><span
                                         class="right-nav-text">Ayuda
                                     </span></a>
                             </li>
@@ -248,18 +253,18 @@
 
                             <!-- menu item chat-->
                             <li>
-                                <a href="{{ route('pagos') }}"><i class="ti-comments"></i><span
+                                <a href="{{ route('pagos') }}"><i class="fa fa-dollar"></i><span
                                         class="right-nav-text">Pagos
                                     </span></a>
                             </li>
 
                             <li>
-                                <a href="{{ route('soporte') }}"><i class="ti-comments"></i><span class="right-nav-text">Ayuda
+                                <a href="{{ route('soporte') }}"><i class="fa fa-question-circle-o"></i><span class="right-nav-text">Ayuda
                                     </span></a>
                             </li>
 
                             <li>
-                                <a href="{{ route('perfil') }}"><i class="ti-comments"></i><span
+                                <a href="{{ route('perfil') }}"><i class="ti-user"></i><span
                                         class="right-nav-text">Configurar perfil
                                     </span></a>
                             </li>
