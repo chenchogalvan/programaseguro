@@ -140,7 +140,7 @@
                                             <td>{{ $p->payment_id }}</td>
                                             <td>
 
-                                                @if ($p->status == 'pending' && $p->fechaVencimiento >= Carbon\Carbon::now())
+                                                @if ($p->status == 'pending')
                                                     <a href="{{ route('modificarPago', ['aprobar', $p]) }}"
                                                         class="btn btn-success">Aprobar pago</a>
 
