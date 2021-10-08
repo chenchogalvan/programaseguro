@@ -91,7 +91,7 @@
                                     <tr>
                                         <th>Estatus</th>
                                         <th>Id del pago</th>
-                                        <th>FEcha de vencimiento</th>
+                                        <th>Fecha de vencimiento</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -110,7 +110,7 @@
 
                                             @endif</td>
                                             <td>{{ $p->payment_id }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($upago[0]->fechaVencimiento)->format('d M, Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($p->fechaVencimiento)->format('d M, Y') }}</td>
 
                                         </tr>
 
