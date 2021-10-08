@@ -498,6 +498,8 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
             $p->fechaVencimiento = Carbon::now()->addMonths(1);
             $p->save();
 
+            DB::select('CALL updatePagoStep(?)', array($pago->user->id));
+
             return redirect()->back()->with('modify', 'Se modifico el registro de <b>'.$pago->user->name.' '.$pago->user->middleName.' '.$pago->user->lastName.'</b> con el id de pago <b>'.$pago->payment_id.'</b> a <b>aprobado</b> de forma exitosa.');
         }else if($status == 'cancelar'){
 
