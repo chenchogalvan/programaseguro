@@ -342,6 +342,20 @@
     @stack('js')
 
 
+    <script>
+        @if (Session::has('emptyData'))
+            Swal.fire({
+            title: 'Sin datos para exportar',
+            html: '{!! Session::get('emptyData') !!}',
+            icon: 'info',
+            confirmButtonText: 'Cerrar'
+            })
+        @endif
+
+
+    </script>
+
+
 </body>
 
 </html>

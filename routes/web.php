@@ -461,13 +461,16 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
             ];
         }
 
+        if (empty($data)) {
+            return redirect()->back()->with("emptyData", "No hay pagos aprobados o validos para exportar.");
+        }else{
+            $export = new App\Exports\PagosExport($data);
 
-        $export = new App\Exports\PagosExport($data);
+            return Excel::download($export, 'lista.xlsx');
+        }
 
 
 
-
-        return Excel::download($export, 'lista.xlsx');
     })->name('listaVigentes');
 
     Route::get('/pagos-vencidos', function () {
