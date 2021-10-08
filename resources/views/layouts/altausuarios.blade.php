@@ -136,6 +136,10 @@
     <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
 
+        <script>
+            !function(a){a.fn.datepicker.dates.es={days:["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"],daysShort:["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"],daysMin:["Do","Lu","Ma","Mi","Ju","Vi","Sa"],months:["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],monthsShort:["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"],today:"Hoy",monthsTitle:"Meses",clear:"Borrar",weekStart:1,format:"dd/mm/yyyy"}}(jQuery);
+        </script>
+
     <script>
         @if (Session::has('success'))
             swal(
@@ -169,23 +173,29 @@
 
         $("#formulario").validate({
             messages: {
-                name: "Este campo es necesario",
-                middleName: "Este campo es necesario",
-                lastName: "Este campo es necesario",
-                email: "Este campo es necesario",
-                phone: "Este campo es necesario",
-                birthday: "Este campo es necesario",
-                RFC: "Este campo es necesario",
-                CURP: "Este campo es necesario",
-                NSS: "Este campo es necesario"
+                name: "Este campo es obligatorio.",
+                middleName: "Este campo es obligatorio.",
+                lastName: "Este campo es obligatorio.",
+                email: "Este campo es obligatorio.",
+                phone: "Este campo es obligatorio.",
+                birthday: "Revisa que el formato sea el correcto o no esté vacío.",
+                RFC: "Revisa que el formato sea el correcto o que no esté vacío.",
+                CURP: "Revisa que el formato sea el correcto o que no esté vacío.",
+                NSS: "Recuerda ingresar los 11 dígitos de tu seguro del IMSS."
             },
             rules: {
                 RFC: {
-                    RFC: true
+                    RFC: true,
+                    minlength: 13,
+                    maxlength: 13
                 },
                 CURP: {
                     CURP: true
                 },
+                NSS:{
+                    minlength: 11,
+                    maxlength: 11
+                }
             },
             errorElement: "em",
             errorPlacement: function(error, element) {
@@ -211,10 +221,11 @@
             var date_input = $('input[name="birthday"]'); //our date input has the name "date"
             var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
             var options = {
-                format: 'mm/dd/yyyy',
+                format: 'dd/mm/yyyy',
                 container: container,
                 todayHighlight: true,
                 autoclose: true,
+                language: 'es',
             };
             date_input.datepicker(options);
         })
