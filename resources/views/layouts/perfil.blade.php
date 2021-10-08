@@ -41,12 +41,12 @@
         <div class="row">
             <div class="col-xl-4 mb-30">
                 @if (Session::has('successDatos'))
-                <div class="mb-30">
-                    <div class="alert alert-success" role="alert">
-                        <h4 class="alert-heading">Datos actualizados</h4>
-                        <p>Los datos se actualizaron de forma correcta</p>
+                    <div class="mb-30">
+                        <div class="alert alert-success" role="alert">
+                            <h4 class="alert-heading">Datos actualizados</h4>
+                            <p>Los datos se actualizaron de forma correcta</p>
+                        </div>
                     </div>
-                </div>
                 @endif
                 <div class="card mb-30 about-me">
                     <div class="card-body">
@@ -81,7 +81,7 @@
                                         </button> --}}
                                     </div>
                                     <div class="modal-body">
-                                        <form method="POST" action="{{ route('actualizarInfo') }}">
+                                        <form id="formulario" method="POST" action="{{ route('actualizarInfo') }}">
                                             @csrf
                                             {{-- <div class="form-group">
                                                 <label>Correo</label>
@@ -93,7 +93,7 @@
 
                                                 <div class="form-group">
                                                     <label>Teléfono</label>
-                                                    <input type="text" class="form-control" name="phone"
+                                                    <input type="number" class="form-control" id="phone" name="phone"
                                                         value="{{ Auth::user()->phone }}" required>
                                                 </div>
 
@@ -101,23 +101,23 @@
                                             @else
                                                 <div class="form-group">
                                                     <label>Teléfono</label>
-                                                    <input type="text" class="form-control" name="phone"
+                                                    <input type="number" class="form-control" id="phone" name="phone"
                                                         value="{{ Auth::user()->phone }}" required>
                                                 </div>
 
                                                 <div class="form-group">
                                                     <label>N° IMSS</label>
-                                                    <input type="text" class="form-control" name="NSS"
+                                                    <input type="number" class="form-control" name="NSS"
                                                         value="{{ Auth::user()->NSS }}" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>RFC</label>
-                                                    <input type="text" name="RFC" class="form-control" name="RFC"
+                                                    <input onkeyup="this.value = this.value.toUpperCase();" type="text" name="RFC" class="form-control" name="RFC"
                                                         value="{{ Auth::user()->RFC }}" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>CURP</label>
-                                                    <input type="text" class="form-control" name="CURP"
+                                                    <input onkeyup="this.value = this.value.toUpperCase();" type="text" class="form-control" name="CURP"
                                                         value="{{ Auth::user()->CURP }}" required>
                                                 </div>
                                             @endif
@@ -156,7 +156,8 @@
 
                             <li>
                                 <fieldset>
-                                    <button class="btn btn-success d-grid" data-toggle="modal" data-target="#exampleModalCenter">Editar información</button>
+                                    <button class="btn btn-success d-grid" data-toggle="modal"
+                                        data-target="#exampleModalCenter">Editar información</button>
                                 </fieldset>
                             </li>
 
@@ -174,23 +175,25 @@
                             <button type="button" class="dropdown-toggle-split text-muted" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false"><i class="ti-more"></i></button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ route('soporte') }}"><i class="text-success ti-book"></i>Crear nuevo
+                                <a class="dropdown-item" href="{{ route('soporte') }}"><i
+                                        class="text-success ti-book"></i>Crear nuevo
                                     ticket</a>
                             </div>
                         </div>
                         <div class="scrollbar max-h-550 tickets-info">
                             <ul class="list-unstyled">
                                 @foreach ($t as $t)
-                                <li class="mb-15">
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <h6 class="mt-0 ">{{ $t->asunto }} - <small @if ($t->status == 'abierto') class="text-success" @elseif($t->status == 'cerrado') class="text-danger" @endif> {{ $t->status }}</small></h6>
+                                    <li class="mb-15">
+                                        <div class="media">
+                                            <div class="media-body">
+                                                <h6 class="mt-0 ">{{ $t->asunto }} - <small
+                                                        @if ($t->status == 'abierto') class="text-success" @elseif($t->status == 'cerrado') class="text-danger" @endif> {{ $t->status }}</small></h6>
 
-                                            <p class="mt-10">{{ $t->mensaje }}</p>
+                                                <p class="mt-10">{{ $t->mensaje }}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="divider mt-15"></div>
-                                </li>
+                                        <div class="divider mt-15"></div>
+                                    </li>
                                 @endforeach
                             </ul>
                         </div>
@@ -210,10 +213,25 @@
 
 @push('js')
 
-<script type="text/javascript"
-    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
     <script>
-        !function(a){a.fn.datepicker.dates.es={days:["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"],daysShort:["Dom","Lun","Mar","Mié","Jue","Vie","Sáb"],daysMin:["Do","Lu","Ma","Mi","Ju","Vi","Sa"],months:["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"],monthsShort:["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"],today:"Hoy",monthsTitle:"Meses",clear:"Borrar",weekStart:1,format:"dd/mm/yyyy"}}(jQuery);
+        ! function(a) {
+            a.fn.datepicker.dates.es = {
+                days: ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                daysShort: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
+                daysMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
+                months: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre",
+                    "Octubre", "Noviembre", "Diciembre"
+                ],
+                monthsShort: ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+                today: "Hoy",
+                monthsTitle: "Meses",
+                clear: "Borrar",
+                weekStart: 1,
+                format: "dd/mm/yyyy"
+            }
+        }(jQuery);
     </script>
 
 
@@ -230,7 +248,7 @@
             if (value !== '') {
                 var patt = new RegExp(
                     "^[A-Z][A,E,I,O,U,X][A-Z]{2}[0-9]{2}[0-1][0-9][0-3][0-9][M,H][A-Z]{2}[B,C,D,F,G,H,J,K,L,M,N,Ñ,P,Q,R,S,T,V,W,X,Y,Z]{3}[0-9,A-Z][0-9]$"
-                    );
+                );
                 return patt.test(value);
             } else {
                 return false;
@@ -243,7 +261,8 @@
                 birthday: "Revisa que el formato sea el correcto o no esté vacío.",
                 RFC: "Revisa que el formato sea el correcto o que no esté vacío.",
                 CURP: "Revisa que el formato sea el correcto o que no esté vacío.",
-                NSS: "Recuerda ingresar los 11 dígitos de tu seguro del IMSS."
+                NSS: "Recuerda ingresar los 11 dígitos de tu seguro del IMSS.",
+                phone: "Este campo no debe estar vacio."
             },
             rules: {
                 RFC: {
@@ -254,7 +273,7 @@
                 CURP: {
                     CURP: true
                 },
-                NSS:{
+                NSS: {
                     minlength: 11,
                     maxlength: 11
                 }
@@ -295,4 +314,19 @@
             date_input.datepicker(options);
         })
     </script>
+@endpush
+
+
+@push('css')
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
+
+
+    <style>
+        #formulario .error {
+            color: red;
+        }
+
+    </style>
+
 @endpush

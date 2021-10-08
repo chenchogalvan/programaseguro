@@ -305,6 +305,20 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
         $n->mensaje = $request->get('mensaje');
         $n->save();
 
+        $user = App\Models\User::find(Auth::user());
+
+        $data = [
+            'asunto' => $n->asunto,
+            'mensaje' => $n->mensaje,
+            'usuario' => $user[0]->name.' '. $user[0]->middleName.' '.$user[0]->lastName,
+            'correo' => $user[0]->email,
+            'telefono' => $user[0]->phone
+        ];
+
+        // $correo = $user[0]->email;
+
+
+
 
 
         // $data = [
@@ -317,7 +331,16 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
         // $users->notify(new App\Notifications\TicketNotify($data))->to('victor.zambrano@belhaus.mx');
 
-        Mail::to('victor.zambrano@belhaus.mx')->send(new \App\Mail\RegisterEmail());
+        // return new \App\Mail\RegisterEmail([$data, $correo]);
+        // Mail::to('victor.zambrano@belhaus.mx')->send(new \App\Mail\RegisterEmail($data));
+
+        Mail::to('alfredogalvan.91@gmail.com')->send(new \App\Mail\RegisterEmail($data));
+
+        // Mail::send('emails.ticketEmail', $data, function ($message) use ($datos) {
+        //     $message->to('victor.zambrano@belhaus.mx');
+        //     $message->replyTo($datos[0]->correo);
+        //     $message->subject('Ticket de soporte | Programa Seguro');;
+        // });
 
         return redirect()->back()->with('successMessage', '');
 
