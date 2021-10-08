@@ -331,10 +331,9 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
         // $users->notify(new App\Notifications\TicketNotify($data))->to('victor.zambrano@belhaus.mx');
 
-        // return new \App\Mail\RegisterEmail([$data, $correo]);
-        // Mail::to('victor.zambrano@belhaus.mx')->send(new \App\Mail\RegisterEmail($data));
+        Mail::to('victor.zambrano@belhaus.mx')->send(new \App\Mail\RegisterEmail($data));
 
-        Mail::to('alfredogalvan.91@gmail.com')->send(new \App\Mail\RegisterEmail($data));
+        // Mail::to('alfredogalvan.91@gmail.com')->send(new \App\Mail\RegisterEmail($data));
 
         // Mail::send('emails.ticketEmail', $data, function ($message) use ($datos) {
         //     $message->to('victor.zambrano@belhaus.mx');
