@@ -86,7 +86,7 @@
                     <div class="card-body">
                         <h5 class="card-title border-0 pb-0">Lista de pagos y estatus</h5>
                         <div class="table-responsive">
-                            <table id="datatable" class="table table-striped table-bordered p-0">
+                            <table id="myTable" class="table table-striped table-bordered p-0">
                                 <thead>
                                     <tr>
                                         <th>Estatus</th>
@@ -298,4 +298,32 @@
         //     },
         // });
     </script>
+
+
+<script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable({
+            "language": {
+                "lengthMenu": "Mostrando _MENU_ registros por pagina",
+                "zeroRecords": "No hay registros",
+                "info": "Pagina _PAGE_ de _PAGES_",
+                "infoEmpty": "No hay registros",
+                "infoFiltered": "(filtered from _MAX_ total records)",
+                "search": "Buscar",
+                "paginate": {
+                    "first": "Primero",
+                    "last": "Ultimo",
+                    "next": "Siguiente",
+                    "previous": "Anterior"
+                },
+            }
+        });
+    });
+</script>
+
+@endpush
+
+@push('css')
+    <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 @endpush
