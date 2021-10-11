@@ -31,7 +31,11 @@
                                     <th>CURP</th>
                                     <th>NSS</th>
                                     <th>RFC</th>
-                                    <th>Estado</th>
+                                    <th>Estado de información</th>
+                                    <th>Estado de ultimo pago</th>
+                                    <th>Estado de suscripción</th>
+                                    <th>Fecha de ultimo pago</th>
+                                    <th>Fecha de vencimiento</th>
                                     <th>Acción</th>
                                 </tr>
                             </thead>
@@ -59,28 +63,40 @@
 
                                             @endif
                                         </td>
-                                        <td><a href="{{ route('editarUsuario', $u->id) }}"
+                                        <td>
+                                            @if ($u->pago[0]->status == 'failure')
+                                                <span class="badge badge-danger"> Cancelado/Fallido </span>
+                                            @elseif ($u->pago[0]->status == 'pending')
+                                                <span class="badge badge-warning"> Pendiente </span>
+                                            @elseif ($u->pago[0]->status == 'approved')
+                                                <span class="badge badge-success"> Aprobado </span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($u->pago[0]->fechaVencimiento >= \Carbon\Carbon::now() && $u->pago[0]->status == 'approved')
+                                                <span class="badge badge-success"> Vigente </span>
+                                            @elseif($u->pago[0]->fechaVencimiento < \Carbon\Carbon::now() && $u->pago[0]->status == 'failure')
+                                                <span class="badge badge-danger"> Vencido </span>
+                                            @else
+                                                <span class="badge badge-warning"> Pendiente </span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $u->pago[0]->created_at }}</td>
+                                        <td>{{ $u->pago[0]->fechaVencimiento }}</td>
+                                        <td>
+                                            <a href="{{ route('editarUsuario', $u->id) }}"
                                                 class="btn btn-warning btn-sm"><i class="fa fa-book"></i>
-                                                Editar usuario</a></td>
+                                                Editar usuario</a>
+                                            <a href="{{ route('verPagosUsuarios', $u->id) }}" class="btn btn-primary btn-sm"> <i class="fa fa-wpforms"></i>
+                                                Ver pagos </a>
+                                        </td>
                                     </tr>
 
                                 @endforeach
 
 
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Correo</th>
-                                    <th>Teléfono</th>
-                                    <th>Fecha de nacimiento</th>
-                                    <th>CURP</th>
-                                    <th>NSS</th>
-                                    <th>RFC</th>
-                                    <th>Estado</th>
-                                    <th>Acción</th>
-                                </tr>
-                            </tfoot>
+
 
                         </table>
                     </div>
@@ -111,7 +127,7 @@
             $(document).ready(function() {
                 $('#myTable').DataTable({
                     "language": {
-                        "lengthMenu": "Mostrando _MENU_ registros por pagina",
+                        "lengthMenu": "Mostrando _MENU_ registros por página",
                         "zeroRecords": "No hay registros",
                         "info": "Pagina _PAGE_ de _PAGES_",
                         "infoEmpty": "No hay registros",

@@ -282,7 +282,7 @@
         $(document).ready(function() {
             $('#myTable').DataTable({
                 "language": {
-                    "lengthMenu": "Mostrando _MENU_ registros por pagina",
+                    "lengthMenu": "Mostrando _MENU_ registros por página",
                     "zeroRecords": "No hay registros",
                     "info": "Pagina _PAGE_ de _PAGES_",
                     "infoEmpty": "No hay registros",

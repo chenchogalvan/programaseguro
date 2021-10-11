@@ -17,6 +17,11 @@ class Pago extends Model
         'payment_id'
     ];
 
+    protected $casts = [
+        'created_at' => 'datetime',
+        'fechavencimiento' => 'datetime'
+    ];
+
 
     /**
      * Get the user that owns the Pago

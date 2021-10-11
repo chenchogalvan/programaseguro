@@ -104,21 +104,21 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
     Route::get('/pagos', function () {
 
-        // SDK de Mercado Pago
-        require base_path('/vendor/autoload.php');
-        // Agrega credenciales
-        MercadoPago\SDK::setAccessToken(config('services.mercadopago.token'));
+        // // SDK de Mercado Pago
+        // require base_path('/vendor/autoload.php');
+        // // Agrega credenciales
+        // MercadoPago\SDK::setAccessToken(config('services.mercadopago.token'));
 
-        // Crea un objeto de preferencia
-        $preference = new MercadoPago\Preference();
+        // // Crea un objeto de preferencia
+        // $preference = new MercadoPago\Preference();
 
-        // Crea un ítem en la preferencia
-        $item = new MercadoPago\Item();
-        $item->title = 'Mi producto';
-        $item->quantity = 1;
-        $item->unit_price = 75.56;
-        $preference->items = array($item);
-        $preference->save();
+        // // Crea un ítem en la preferencia
+        // $item = new MercadoPago\Item();
+        // $item->title = 'Mi producto';
+        // $item->quantity = 1;
+        // $item->unit_price = 75.56;
+        // $preference->items = array($item);
+        // $preference->save();
 
         $upago = Pago::where('user_id', Auth::user()->id)->latest('fechaVencimiento')->get();
         $pago = Pago::where('user_id', Auth::user()->id)->get();
@@ -131,7 +131,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
         // return $pago;
 
 
-        return view('layouts.pagos', compact('preference', 'pago', 'upago'));
+        return view('layouts.pagos', compact('pago', 'upago'));
     })->name('pagos');
 
     Route::get('/pagos/status', function (Request $request) {
@@ -145,39 +145,136 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
         $fecha2 = Carbon::now()->subDays(1);
 
 
-        if ($status == "approved") {
-            DB::select('CALL updatePagoStep(?)', array($u->id));
+        $us = App\Models\User::role('User')->where('id', $u->id)
+                    ->with('pago', function($q){
+                        return $q->latest('created_at')
+                        //where('created_at', '>=', Carbon::now())
+                        // ->where('status', '=', 'approved')
+                        ->orderBy('created_at', 'asc')
+                        ->groupBy('user_id');
+                    })->get();
 
-            $d = new App\Models\Pago;
-            $d->user_id = $u->id;
-            $d->fechaVencimiento = $fecha;
-            $d->status = $status;
-            $d->payment_type = $payment_type;
-            $d->payment_id = $payment_id;
-            $d->save();
-            return redirect()->route('dashboard')->with('successPago', '');
-        }else if ($status == "pending") {
 
-            $d = new App\Models\Pago;
+        $pago = App\Models\Pago::where('user_id', $u->id)
+                    ->where('status', 'approved')
+                    ->latest('created_at')
+                    ->orderBy('created_at', 'asc')
+                    ->groupBy('user_id')
+                    ->first();
 
-            $d->user_id = $u->id;
-            $d->fechaVencimiento = $fecha2;
-            $d->status = $status;
-            $d->payment_type = $payment_type;
-            $d->payment_id = $payment_id;
-            $d->save();
-            return redirect()->back()->with('pending', '');
-        }else if ($status == "failure") {
+        // return Carbon::parse($pago->fechaVencimiento)->addMonths(1)->format('M d Y');
 
-            $d = new App\Models\Pago;
-            $d->user_id = $u->id;
-            $d->fechaVencimiento = $fecha2;
-            $d->status = $status;
-            $d->payment_type = $payment_type;
-            $d->payment_id = $payment_id;
-            $d->save();
-            return redirect()->back()->with('failure', '');
+        //Si no existe registro pondra la fecha de creación como base
+        //Si existe entonces tomará la fecha de vencimiento
+        if ($pago == null) {
+            if ($status == "approved") {
+                DB::select('CALL updatePagoStep(?)', array($u->id));
+
+                $d = new App\Models\Pago;
+                $d->user_id = $u->id;
+                $d->fechaVencimiento = $fecha;
+                $d->status = $status;
+                $d->payment_type = $payment_type;
+                $d->payment_id = $payment_id;
+                $d->save();
+                return redirect()->route('dashboard')->with('successPago', '');
+            }else if ($status == "pending") {
+
+                $d = new App\Models\Pago;
+
+                $d->user_id = $u->id;
+                $d->fechaVencimiento = $fecha2;
+                $d->status = $status;
+                $d->payment_type = $payment_type;
+                $d->payment_id = $payment_id;
+                $d->save();
+                return redirect()->back()->with('pending', '');
+            }else if ($status == "failure") {
+
+                $d = new App\Models\Pago;
+                $d->user_id = $u->id;
+                $d->fechaVencimiento = $fecha2;
+                $d->status = $status;
+                $d->payment_type = $payment_type;
+                $d->payment_id = $payment_id;
+                $d->save();
+                return redirect()->back()->with('failure', '');
+            }
+        }else{
+
+            if ($status == "approved") {
+                DB::select('CALL updatePagoStep(?)', array($u->id));
+
+                $d = new App\Models\Pago;
+                $d->user_id = $u->id;
+                $d->fechaVencimiento = Carbon::parse($pago->fechaVencimiento)->addMonths(1);
+                $d->status = $status;
+                $d->payment_type = $payment_type;
+                $d->payment_id = $payment_id;
+                $d->save();
+                return redirect()->route('dashboard')->with('successPago', '');
+            }else if ($status == "pending") {
+
+                $d = new App\Models\Pago;
+
+                $d->user_id = $u->id;
+                $d->fechaVencimiento = $fecha2;
+                $d->status = $status;
+                $d->payment_type = $payment_type;
+                $d->payment_id = $payment_id;
+                $d->save();
+                return redirect()->back()->with('pending', '');
+            }else if ($status == "failure") {
+
+                $d = new App\Models\Pago;
+                $d->user_id = $u->id;
+                $d->fechaVencimiento = $fecha2;
+                $d->status = $status;
+                $d->payment_type = $payment_type;
+                $d->payment_id = $payment_id;
+                $d->save();
+                return redirect()->back()->with('failure', '');
+            }
+
+
         }
+
+
+
+
+        // if ($status == "approved") {
+        //     DB::select('CALL updatePagoStep(?)', array($u->id));
+
+        //     $d = new App\Models\Pago;
+        //     $d->user_id = $u->id;
+        //     $d->fechaVencimiento = $fecha;
+        //     $d->status = $status;
+        //     $d->payment_type = $payment_type;
+        //     $d->payment_id = $payment_id;
+        //     $d->save();
+        //     return redirect()->route('dashboard')->with('successPago', '');
+        // }else if ($status == "pending") {
+
+        //     $d = new App\Models\Pago;
+
+        //     $d->user_id = $u->id;
+        //     $d->fechaVencimiento = $fecha2;
+        //     $d->status = $status;
+        //     $d->payment_type = $payment_type;
+        //     $d->payment_id = $payment_id;
+        //     $d->save();
+        //     return redirect()->back()->with('pending', '');
+        // }else if ($status == "failure") {
+
+        //     $d = new App\Models\Pago;
+        //     $d->user_id = $u->id;
+        //     $d->fechaVencimiento = $fecha2;
+        //     $d->status = $status;
+        //     $d->payment_type = $payment_type;
+        //     $d->payment_id = $payment_id;
+        //     $d->save();
+        //     return redirect()->back()->with('failure', '');
+        // }
     });
 
     Route::get('/soporte', function () {
@@ -191,7 +288,22 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
     //Admin
     Route::get('/usuarios-registrados', function () {
-        $u = App\Models\User::role('User')->get();
+        // $u = App\Models\User::role('User')
+        //                 ->with('pago')
+        //                 ->where('fechaVencimiento', '<', Carbon::now())
+        //                 ->orderBy('fechaVencimiento', 'asc')
+        //                 ->groupBy('user_id')
+        //                 ->get();
+
+        $u = App\Models\User::role('User')
+                            ->with('pago', function($q){
+                                return $q->latest('created_at')
+                                //where('created_at', '>=', Carbon::now())
+                                // ->where('status', '=', 'approved')
+                                ->orderBy('created_at', 'asc')
+                                ->groupBy('user_id');
+                            })->get();
+        // return $u;
         return view('layouts.usuarios', compact('u'));
     })->name('usuariosRegistrados');
 
@@ -446,20 +558,62 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                     ->get();
 
 
+        $u = App\Models\User::role('User')
+                    ->with('pago', function($q){
+                        return $q->latest('created_at')
+                        //where('created_at', '>=', Carbon::now())
+                        // ->where('status', '=', 'approved')
+                        ->orderBy('created_at', 'asc')
+                        ->groupBy('user_id');
+                    })->get();
 
-        foreach ($pagos as $p) {
+
+        foreach ($u as $u) {
+
+
+            if ($u->pago[0]->status == 'approved' && $u->pago[0]->fechaVencimiento >= \Carbon\Carbon::now()) {
+                $estadoPago = 'Vigente';
+            }else if($u->pago[0]->status == 'failure' && $u->pago[0]->fechaVencimiento < \Carbon\Carbon::now() || $u->pago[0]->status == 'failure'){
+                $estadoPago = 'Vencido';
+            }else{
+                $estadoPago = 'Pendeinte';
+            }
             $data[] = [
-                'id' => $p->id,
-                'nombre' => $p->user->name.' '.$p->user->middleName.' '.$p->user->lastName,
-                'email' => $p->user->email,
-                'phone' => $p->user->phone,
-                'birthday' => $p->user->birthday,
-                'CURP' => $p->user->CURP,
-                'NSS' => $p->user->NSS,
-                'RFC' => $p->user->RFC,
-                'fechaVencimiento' => $p->fechaVencimiento
+
+                'id' => $u->id,
+                'nombre' => $u->name,
+                'paterno' => $u->middleName,
+                'materno' => $u->lastName,
+                'email' => $u->email,
+                'phone' => $u->phone,
+                'birthday' => $u->birthday,
+                'CURP' => $u->CURP,
+                'NSS' => $u->NSS,
+                'RFC' => $u->RFC,
+                'estadoPago' => $u->pago[0]->status,
+                'estadoSuscripcion' => $estadoPago,
+                'fechaUltimoPago' => $u->pago[0]->created_at,
+                'fechaVencimiento' => $u->pago[0]->fechaVencimiento,
+
+
             ];
         }
+
+
+
+        // foreach ($pagos as $p) {
+        //     $data[] = [
+        //         'id' => $p->id,
+        //         'nombre' => $p->user->name.' '.$p->user->middleName.' '.$p->user->lastName,
+        //         'email' => $p->user->email,
+        //         'phone' => $p->user->phone,
+        //         'birthday' => $p->user->birthday,
+        //         'CURP' => $p->user->CURP,
+        //         'NSS' => $p->user->NSS,
+        //         'RFC' => $p->user->RFC,
+        //         'fechaVencimiento' => $p->fechaVencimiento
+        //     ];
+        // }
 
         if (empty($data)) {
             return redirect()->back()->with("emptyData", "No hay pagos aprobados o validos para exportar.");
@@ -513,5 +667,17 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
 
     })->name('modificarPago');
+
+
+    //Ver pagos independientes
+    Route::get('/pagos-de-usuarios/{user}', function (App\Models\User $user) {
+
+
+        $pagos = App\Models\Pago::where('user_id', $user->id)->get();
+
+
+
+        return view('layouts.verPagosUsuarios', compact('user', 'pagos'));
+    })->name('verPagosUsuarios');
 
 });

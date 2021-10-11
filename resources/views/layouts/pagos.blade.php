@@ -66,7 +66,7 @@
                             @if (count($upago) < 1)
                                 <p>Realiza tu pago para contar con todos los beneficios de Programa Seguro</p>
                             @else
-                                <p>Tu proxima fecha de vencimiento es el día <b>{{ \Carbon\Carbon::parse($upago[0]->fechaVencimiento)->format('d M, Y') }}</b></p>
+                                <p>Tu próxima fecha de vencimiento es el día <b>{{ \Carbon\Carbon::parse($upago[0]->fechaVencimiento)->format('d M, Y') }}</b></p>
                             @endif
 
                         </div>
@@ -84,14 +84,14 @@
             <div class="col-xl-8 mb-60">
                 <div class="card card-statistics h-100">
                     <div class="card-body">
-                        <h5 class="card-title border-0 pb-0">Lista de pagos y estatus</h5>
+                        <h5 class="card-title border-0 pb-0">Lista de pagos </h5>
                         <div class="table-responsive">
                             <table id="myTable" class="table table-striped table-bordered p-0">
                                 <thead>
                                     <tr>
                                         <th>Estatus</th>
                                         <th>Id del pago</th>
-                                        <th>Fecha de vencimiento</th>
+                                        <th>Fecha de pago</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -100,7 +100,7 @@
 
                                         <tr>
                                             <td>@if ($p->status == 'approved')
-                                                <span class="badge bg-success float-end mt-1 text-white">Aprovado</span>
+                                                <span class="badge bg-success float-end mt-1 text-white">Aprobado</span>
 
                                             @elseif ($p->status == 'pending')
                                                 <span class="badge bg-warning float-end mt-1 text-white">   Pendiente </span>
@@ -110,7 +110,7 @@
 
                                             @endif</td>
                                             <td>{{ $p->payment_id }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($p->fechaVencimiento)->format('d M, Y') }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($p->created_at)->format('d M, Y') }}</td>
 
                                         </tr>
 
@@ -305,7 +305,7 @@
     $(document).ready(function() {
         $('#myTable').DataTable({
             "language": {
-                "lengthMenu": "Mostrando _MENU_ registros por pagina",
+                "lengthMenu": "Mostrando _MENU_ registros por página",
                 "zeroRecords": "No hay registros",
                 "info": "Pagina _PAGE_ de _PAGES_",
                 "infoEmpty": "No hay registros",

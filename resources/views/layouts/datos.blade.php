@@ -37,7 +37,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">N° IMSS</label>
-                            <input type="text" class="form-control" id="NSS"
+                            <input type="number" class="form-control" id="NSS"
                                 aria-describedby="emailHelp" placeholder="" name="NSS" required>
                             <small id="emailHelp" class="form-text text-muted">Si desconoces tu N° del IMSS, da clic <a href="https://serviciosdigitales.imss.gob.mx/gestionAsegurados-web-externo/asignacionNSS;JSESSIONIDASEGEXTERNO=xbmya4uU6REpD9GD9f6lb0SK39a0Bg7fiRfyqeWqIc4V4xLkmF4W!-1399856305"
                                     target="_blank">aquí</a> para consultar.</small>

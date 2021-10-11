@@ -107,6 +107,7 @@
                                 <thead>
                                     <tr>
                                         <th>Nombre</th>
+                                        <th>Fecha de pago</th>
                                         <th>Fecha de vencimiento</th>
                                         <th>Estatus del pago</th>
                                         <th>Tipo de pago</th>
@@ -134,8 +135,9 @@
                                         <tr>
                                             <td>{{ $p->user['name'] . ' ' . $p->user['middleName'] . ' ' . $p->user['lastName'] }}
                                             </td>
+                                            <td>{{ $p->created_at }}</td>
                                             <td>{{ $p->fechaVencimiento }}</td>
-                                            <td>@if ($p->status == 'approved')<span class="badge bg-success float-end mt-1 text-white">Aprovado</span>@elseif ($p->status == 'pending')<span class="badge bg-warning float-end mt-1 text-white">   Pendiente </span>@elseif ($p->status == 'failure')<span class="badge bg-danger float-end mt-1 text-white">   Fallido/Cancelado </span>@endif</td>
+                                            <td>@if ($p->status == 'approved')<span class="badge bg-success float-end mt-1 text-white">Aprobado</span>@elseif ($p->status == 'pending')<span class="badge bg-warning float-end mt-1 text-white">   Pendiente </span>@elseif ($p->status == 'failure')<span class="badge bg-danger float-end mt-1 text-white">   Fallido/Cancelado </span>@endif</td>
                                             <td>{{ $p->payment_type }}</td>
                                             <td>{{ $p->payment_id }}</td>
                                             <td>
@@ -196,7 +198,7 @@
     $(document).ready(function() {
         $('#myTable').DataTable({
             "language": {
-                "lengthMenu": "Mostrando _MENU_ registros por pagina",
+                "lengthMenu": "Mostrando _MENU_ registros por página",
                 "zeroRecords": "No hay registros",
                 "info": "Pagina _PAGE_ de _PAGES_",
                 "infoEmpty": "No hay registros",
