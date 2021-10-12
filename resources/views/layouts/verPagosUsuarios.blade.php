@@ -77,7 +77,7 @@
                                     @foreach ($pagos as $p)
                                         <tr>
 
-                                            <td>{{ $p->created_at }}</td>
+                                            <td>{{ $p->fechaPago }}</td>
                                             <td>{{ $p->fechaVencimiento }}</td>
                                             <td>@if ($p->status == 'approved')<span class="badge bg-success float-end mt-1 text-white">Aprobado</span>@elseif ($p->status == 'pending')<span class="badge bg-warning float-end mt-1 text-white">   Pendiente </span>@elseif ($p->status == 'failure')<span class="badge bg-danger float-end mt-1 text-white">   Fallido/Cancelado </span>@endif</td>
                                             <td>{{ $p->payment_type }}</td>

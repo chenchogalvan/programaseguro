@@ -110,7 +110,7 @@
 
                                             @endif</td>
                                             <td>{{ $p->payment_id }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($p->created_at)->format('d M, Y') }}</td>
+                                            <td>{{ $p->fechaPago == '' ? ' ' : $p->fechaPago->format('d/m/Y') }}</td>
 
                                         </tr>
 

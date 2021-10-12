@@ -17,9 +17,18 @@ class Pago extends Model
         'payment_id'
     ];
 
+    protected $dates = [
+        'created_at',
+        'fechaVencimiento',
+        'fechaPago',
+    ];
+
+    protected $dateFormat = 'Y-m-d';
+
     protected $casts = [
         'created_at' => 'datetime',
-        'fechavencimiento' => 'datetime'
+        'fechaVencimiento' => 'datetime:d-m-Y H:00',
+        'fechaPago' => 'datetime:d-m-Y H:00',
     ];
 
 

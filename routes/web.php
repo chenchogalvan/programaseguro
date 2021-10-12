@@ -173,6 +173,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 $d = new App\Models\Pago;
                 $d->user_id = $u->id;
                 $d->fechaVencimiento = $fecha;
+                $d->fechaPago = Carbon::now();
                 $d->status = $status;
                 $d->payment_type = $payment_type;
                 $d->payment_id = $payment_id;
@@ -183,7 +184,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 $d = new App\Models\Pago;
 
                 $d->user_id = $u->id;
-                $d->fechaVencimiento = $fecha2;
+                // $d->fechaVencimiento = $fecha2;
                 $d->status = $status;
                 $d->payment_type = $payment_type;
                 $d->payment_id = $payment_id;
@@ -193,7 +194,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
                 $d = new App\Models\Pago;
                 $d->user_id = $u->id;
-                $d->fechaVencimiento = $fecha2;
+                // $d->fechaVencimiento = $fecha2;
                 $d->status = $status;
                 $d->payment_type = $payment_type;
                 $d->payment_id = $payment_id;
@@ -208,6 +209,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 $d = new App\Models\Pago;
                 $d->user_id = $u->id;
                 $d->fechaVencimiento = Carbon::parse($pago->fechaVencimiento)->addMonths(1);
+                $d->fechaPago = Carbon::now();
                 $d->status = $status;
                 $d->payment_type = $payment_type;
                 $d->payment_id = $payment_id;
@@ -218,7 +220,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 $d = new App\Models\Pago;
 
                 $d->user_id = $u->id;
-                $d->fechaVencimiento = $fecha2;
+                // $d->fechaVencimiento = $fecha2;
                 $d->status = $status;
                 $d->payment_type = $payment_type;
                 $d->payment_id = $payment_id;
@@ -228,7 +230,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
                 $d = new App\Models\Pago;
                 $d->user_id = $u->id;
-                $d->fechaVencimiento = $fecha2;
+                // $d->fechaVencimiento = $fecha2;
                 $d->status = $status;
                 $d->payment_type = $payment_type;
                 $d->payment_id = $payment_id;
@@ -592,7 +594,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 'RFC' => $u->RFC,
                 'estadoPago' => $u->pago[0]->status,
                 'estadoSuscripcion' => $estadoPago,
-                'fechaUltimoPago' => $u->pago[0]->created_at,
+                'fechaUltimoPago' => $u->pago[0]->fechaPago,
                 'fechaVencimiento' => $u->pago[0]->fechaVencimiento,
 
 
@@ -643,27 +645,97 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
     Route::get('/modificar-pago/{status}/{pago}', function ($status, App\Models\Pago $pago) {
 
 
-
-        if ($status == 'aprobar') {
-
-
-            $p = $pago;
-            $p->status = 'approved';
-            $p->fechaVencimiento = Carbon::now()->addMonths(1);
-            $p->save();
-
-            DB::select('CALL updatePagoStep(?)', array($pago->user->id));
-
-            return redirect()->back()->with('modify', 'Se modifico el registro de <b>'.$pago->user->name.' '.$pago->user->middleName.' '.$pago->user->lastName.'</b> con el id de pago <b>'.$pago->payment_id.'</b> a <b>aprobado</b> de forma exitosa.');
-        }else if($status == 'cancelar'){
+        $pag = App\Models\Pago::where('user_id', $pago->user_id)
+                    ->where('status', 'approved')
+                    // ->latest('fechavencimiento')
+                    ->orderBy('created_at', 'desc')
+                    // ->groupBy('user_id')
+                    ->first();
 
 
-            $p = $pago;
-            $p->status = 'failure';
-            $p->save();
 
-            return redirect()->back()->with('modify', 'Se modifico el registro de <b>'.$pago->user->name.' '.$pago->user->middleName.' '.$pago->user->lastName.'</b> con el id de pago <b>'.$pago->payment_id.'</b> a <b>cancelado</b> de forma exitosa.');
+
+
+
+
+
+        if ($pag == null) {
+
+            if ($status == 'aprobar') {
+
+
+                $p = $pago;
+                $p->status = 'approved';
+                $p->fechaVencimiento = Carbon::now()->addMonths(1);
+                $p->fechaPago = Carbon::now();
+                $p->save();
+
+                DB::select('CALL updatePagoStep(?)', array($pago->user->id));
+
+                return redirect()->back()->with('modify', 'Se modifico el registro de <b>'.$pago->user->name.' '.$pago->user->middleName.' '.$pago->user->lastName.'</b> con el id de pago <b>'.$pago->payment_id.'</b> a <b>aprobado</b> de forma exitosa.');
+            }else if($status == 'cancelar'){
+
+
+                $p = $pago;
+                $p->status = 'failure';
+                $p->save();
+
+                return redirect()->back()->with('modify', 'Se modifico el registro de <b>'.$pago->user->name.' '.$pago->user->middleName.' '.$pago->user->lastName.'</b> con el id de pago <b>'.$pago->payment_id.'</b> a <b>cancelado</b> de forma exitosa.');
+            }
+
+        }else{
+
+            if ($status == 'aprobar') {
+
+
+                $p = $pago;
+                $p->status = 'approved';
+                $p->fechaVencimiento = Carbon::parse($pag->fechaVencimiento)->addMonths(1);
+                $p->fechaPago = Carbon::now();
+                $p->save();
+
+
+
+                DB::select('CALL updatePagoStep(?)', array($pago->user->id));
+
+                return redirect()->back()->with('modify', 'Se modifico el registro de <b>'.$pago->user->name.' '.$pago->user->middleName.' '.$pago->user->lastName.'</b> con el id de pago <b>'.$pago->payment_id.'</b> a <b>aprobado</b> de forma exitosa.');
+            }else if($status == 'cancelar'){
+
+
+                $p = $pago;
+                $p->status = 'failure';
+                $p->save();
+
+                return redirect()->back()->with('modify', 'Se modifico el registro de <b>'.$pago->user->name.' '.$pago->user->middleName.' '.$pago->user->lastName.'</b> con el id de pago <b>'.$pago->payment_id.'</b> a <b>cancelado</b> de forma exitosa.');
+            }
+
         }
+
+        // return $pag;
+
+
+
+        // if ($status == 'aprobar') {
+
+
+        //     $p = $pago;
+        //     $p->status = 'approved';
+        //     $p->fechaVencimiento = Carbon::now()->addMonths(1);
+        //     $p->fechaPago = Carbon::now();
+        //     $p->save();
+
+        //     DB::select('CALL updatePagoStep(?)', array($pago->user->id));
+
+        //     return redirect()->back()->with('modify', 'Se modifico el registro de <b>'.$pago->user->name.' '.$pago->user->middleName.' '.$pago->user->lastName.'</b> con el id de pago <b>'.$pago->payment_id.'</b> a <b>aprobado</b> de forma exitosa.');
+        // }else if($status == 'cancelar'){
+
+
+        //     $p = $pago;
+        //     $p->status = 'failure';
+        //     $p->save();
+
+        //     return redirect()->back()->with('modify', 'Se modifico el registro de <b>'.$pago->user->name.' '.$pago->user->middleName.' '.$pago->user->lastName.'</b> con el id de pago <b>'.$pago->payment_id.'</b> a <b>cancelado</b> de forma exitosa.');
+        // }
 
 
     })->name('modificarPago');

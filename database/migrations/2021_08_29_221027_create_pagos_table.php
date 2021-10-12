@@ -16,7 +16,7 @@ class CreatePagosTable extends Migration
         Schema::create('pagos', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->dateTime('fechaVencimiento');
+            $table->dateTime('fechaVencimiento')->nullable();
             $table->string('status');
             $table->string('payment_type');
             $table->string('payment_id');

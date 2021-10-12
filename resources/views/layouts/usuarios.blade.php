@@ -81,7 +81,7 @@
                                                 <span class="badge badge-warning"> Pendiente </span>
                                             @endif
                                         </td>
-                                        <td>{{ $u->pago[0]->created_at }}</td>
+                                        <td>{{ $u->pago[0]->fechaPago }}</td>
                                         <td>{{ $u->pago[0]->fechaVencimiento }}</td>
                                         <td>
                                             <a href="{{ route('editarUsuario', $u->id) }}"
