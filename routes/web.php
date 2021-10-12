@@ -299,13 +299,17 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
         $u = App\Models\User::role('User')
                             ->with('pago', function($q){
-                                return $q->latest('created_at')
+                                return $q->orderBy('created_at', 'desc')
+                                //->where('status', '=', 'approved')
+                                //->latest('created_at')
                                 //where('created_at', '>=', Carbon::now())
                                 // ->where('status', '=', 'approved')
-                                ->orderBy('created_at', 'asc')
-                                ->groupBy('user_id');
+                                ->orderBy('created_at', 'desc')
+                                // ->groupBy('user_id')
+                                ->first();
                             })->get();
-        // return $u;
+
+
         return view('layouts.usuarios', compact('u'));
     })->name('usuariosRegistrados');
 
@@ -651,7 +655,6 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                     ->orderBy('created_at', 'desc')
                     // ->groupBy('user_id')
                     ->first();
-
 
 
 

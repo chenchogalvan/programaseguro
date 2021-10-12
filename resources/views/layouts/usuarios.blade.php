@@ -63,6 +63,7 @@
 
                                             @endif
                                         </td>
+
                                         <td>
                                             @if ($u->pago[0]->status == 'failure')
                                                 <span class="badge badge-danger"> Cancelado/Fallido </span>
@@ -81,8 +82,8 @@
                                                 <span class="badge badge-warning"> Pendiente </span>
                                             @endif
                                         </td>
-                                        <td>{{ $u->pago[0]->fechaPago }}</td>
-                                        <td>{{ $u->pago[0]->fechaVencimiento }}</td>
+                                        <td>{{  $u->pago[0]->fechaPago == '' ? '' : $u->pago[0]->id.' | '. $u->pago[0]->fechaPago }}</td>
+                                        <td>{{ $u->pago[0]->fechaVencimiento == '' ? '' : $u->pago[0]->fechaVencimiento }}</td>
                                         <td>
                                             <a href="{{ route('editarUsuario', $u->id) }}"
                                                 class="btn btn-warning btn-sm"><i class="fa fa-book"></i>

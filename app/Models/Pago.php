@@ -23,13 +23,13 @@ class Pago extends Model
         'fechaPago',
     ];
 
-    protected $dateFormat = 'Y-m-d';
+    // protected $dateFormat = 'Y-m-d H:00';
 
-    protected $casts = [
-        'created_at' => 'datetime',
-        'fechaVencimiento' => 'datetime:d-m-Y H:00',
-        'fechaPago' => 'datetime:d-m-Y H:00',
-    ];
+    // protected $casts = [
+    //     'created_at' => 'datetime',
+    //     'fechaVencimiento' => 'datetime:d-m-Y H:00',
+    //     'fechaPago' => 'datetime:d-m-Y H:00',
+    // ];
 
 
     /**
