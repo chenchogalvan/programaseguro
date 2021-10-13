@@ -142,12 +142,13 @@
 
     <script>
         @if (Session::has('success'))
-            swal(
-            'Registro guardado con éxito',
-            'El usuario fue registrado con éxito, se le envió un correo con la información para accesar.',
-            'suuccess',
-            'Cerrar'
-            )
+            Swal.fire({
+            title: 'Registro guardado con éxito',
+            html: 'El usuario fue registrado con éxito, se le envió un correo con la información para accesar.',
+            icon: 'success',
+            confirmButtonText: 'Cerrar'
+
+            })
         @endif
 
 

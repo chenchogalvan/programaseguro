@@ -64,7 +64,12 @@
                                             @endif
                                         </td>
 
+
+
                                         <td>
+                                            @isset($u->pago[0])
+
+
                                             @if ($u->pago[0]->status == 'failure')
                                                 <span class="badge badge-danger"> Cancelado/Fallido </span>
                                             @elseif ($u->pago[0]->status == 'pending')
@@ -72,8 +77,12 @@
                                             @elseif ($u->pago[0]->status == 'approved')
                                                 <span class="badge badge-success"> Aprobado </span>
                                             @endif
+                                            @endisset
                                         </td>
                                         <td>
+                                            @isset($u->pago[0])
+
+
                                             @if ($u->pago[0]->fechaVencimiento >= \Carbon\Carbon::now() && $u->pago[0]->status == 'approved')
                                                 <span class="badge badge-success"> Vigente </span>
                                             @elseif($u->pago[0]->fechaVencimiento < \Carbon\Carbon::now() && $u->pago[0]->status == 'failure')
@@ -81,15 +90,16 @@
                                             @else
                                                 <span class="badge badge-warning"> Pendiente </span>
                                             @endif
+                                            @endisset
                                         </td>
-                                        <td>{{  $u->pago[0]->fechaPago == '' ? '' : $u->pago[0]->id.' | '. $u->pago[0]->fechaPago }}</td>
-                                        <td>{{ $u->pago[0]->fechaVencimiento == '' ? '' : $u->pago[0]->fechaVencimiento }}</td>
-                                        <td>
+                                        <td>@isset($u->pago[0]){{  $u->pago[0]->fechaPago == '' ? '' : $u->pago[0]->id.' | '. $u->pago[0]->fechaPago }}@endisset</td>
+                                        <td>@isset($u->pago[0]){{ $u->pago[0]->fechaVencimiento == '' ? '' : $u->pago[0]->fechaVencimiento }}@endisset</td>
+                                        <td>@isset($u->pago[0])
                                             <a href="{{ route('editarUsuario', $u->id) }}"
                                                 class="btn btn-warning btn-sm"><i class="fa fa-book"></i>
                                                 Editar usuario</a>
                                             <a href="{{ route('verPagosUsuarios', $u->id) }}" class="btn btn-primary btn-sm"> <i class="fa fa-wpforms"></i>
-                                                Ver pagos </a>
+                                                Ver pagos </a>@endisset
                                         </td>
                                     </tr>
 

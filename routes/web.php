@@ -300,15 +300,22 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
         $u = App\Models\User::role('User')
                             ->with('pago', function($q){
                                 return $q->orderBy('created_at', 'desc')
-                                //->where('status', '=', 'approved')
+                                // ->where('status', '=', 'approved')
+                                // ->orWhere('status', '=', 'pending')
+                                // ->orWhere('status', '=', 'faiuler')
                                 //->latest('created_at')
                                 //where('created_at', '>=', Carbon::now())
                                 // ->where('status', '=', 'approved')
                                 ->orderBy('created_at', 'desc')
                                 // ->groupBy('user_id')
-                                ->first();
+                                ->get();
                             })->get();
 
+        // if ($u->pago->exists()) {
+        //     $pagos = 'Existe';
+        // }else{
+        //     $pagos = 'no existe';
+        // }
 
         return view('layouts.usuarios', compact('u'));
     })->name('usuariosRegistrados');
@@ -349,6 +356,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
         $u->password = $pass;
         $u->save();
 
+
         $details = [
             'nombre' => $request->get('name'),
             'password' => $password
@@ -371,6 +379,8 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
 
         DB::select('CALL createStepsRoutine(?)', array($u->id));
+        DB::select('CALL updateDatoStep(?)', array($u->id));
+
 
         $u->assignRole('user');
 
@@ -380,10 +390,11 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
     })->name('saveuser');
 
 
-    Route::get('ticket/{id}', function ($id) {
+    Route::post('ticket/{id}', function ($id, Request $request) {
         $t = App\Models\Tiket::find($id);
 
         $t->status = 'cerrado';
+        $t->notaMensaje = $request->get('mensaje');
         $t->save();
 
         return redirect()->back()->with('succes', '');
@@ -574,15 +585,27 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                     })->get();
 
 
+
         foreach ($u as $u) {
 
 
-            if ($u->pago[0]->status == 'approved' && $u->pago[0]->fechaVencimiento >= \Carbon\Carbon::now()) {
+
+
+            if (isset($u->pago[0]->status) == 'approved' && isset($u->pago[0]->fechaVencimiento) >= \Carbon\Carbon::now()) {
                 $estadoPago = 'Vigente';
-            }else if($u->pago[0]->status == 'failure' && $u->pago[0]->fechaVencimiento < \Carbon\Carbon::now() || $u->pago[0]->status == 'failure'){
+                $estadoPago = isset($u->pago[0]->status) ? $u->pago[0]->status : ' ';
+                $fechaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago : '';
+                $fechaVencimiento = isset($u->pago[0]->fechaVencimiento) ?  $u->pago[0]->fechaVencimiento : '';
+            }else if(isset($u->pago[0]->status) == 'failure' && isset($u->pago[0]->fechaVencimiento) < \Carbon\Carbon::now() || isset($u->pago[0]->status) == 'failure'){
                 $estadoPago = 'Vencido';
+                $estadoPago = isset($u->pago[0]->status) ? $u->pago[0]->status : ' ';
+                $fechaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago : '';
+                $fechaVencimiento = isset($u->pago[0]->fechaVencimiento) ?  $u->pago[0]->fechaVencimiento : '';
             }else{
                 $estadoPago = 'Pendeinte';
+                $estadoPago = isset($u->pago[0]->status) ? $u->pago[0]->status : ' ';
+                $fechaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago : '';
+                $fechaVencimiento = isset($u->pago[0]->fechaVencimiento) ?  $u->pago[0]->fechaVencimiento : '';
             }
             $data[] = [
 
@@ -596,10 +619,10 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 'CURP' => $u->CURP,
                 'NSS' => $u->NSS,
                 'RFC' => $u->RFC,
-                'estadoPago' => $u->pago[0]->status,
+                'estadoPago' => $estadoPago,
                 'estadoSuscripcion' => $estadoPago,
-                'fechaUltimoPago' => $u->pago[0]->fechaPago,
-                'fechaVencimiento' => $u->pago[0]->fechaVencimiento,
+                'fechaUltimoPago' => $fechaUltimoPago,
+                'fechaVencimiento' => $fechaVencimiento,
 
 
             ];
