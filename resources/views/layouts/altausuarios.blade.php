@@ -89,7 +89,7 @@
                             <div class="form-group">
                                 <label class="control-label" for="name">NSS</label>
                                 <div class="mb-2">
-                                    <input type="text" class="form-control" id="NSS" name="NSS" placeholder="" required />
+                                    <input type="number" class="form-control" id="NSS" name="NSS" placeholder="" required />
                                 </div>
                             </div>
 
