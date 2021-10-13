@@ -149,6 +149,17 @@
 
                                                 <td>{{ $t->asunto }}</td>
                                                 <td>{{ $t->mensaje }}</td>
+
+
+                                                <td>
+                                                    @if ($t->status == 'abierto')
+                                                        <span class="badge badge-pill badge-success">{{ $t->status }}</span>
+
+                                                    @elseif ($t->status == 'cerrado')
+                                                        <span class="badge badge-pill badge-danger">{{ $t->status }}</span>
+
+                                                    @endif
+                                                </td>
                                                 <td>{{ $t->created_at->format('d/m/Y') }}</td>
                                                 <td>
                                                     @if ($t->status == 'abierto')
@@ -156,15 +167,6 @@
 
                                                     @elseif ($t->status == 'cerrado')
                                                         {{ $t->notaMensaje }}
-
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($t->status == 'abierto')
-                                                        <span class="badge badge-pill badge-success">{{ $t->status }}</span>
-
-                                                    @elseif ($t->status == 'cerrado')
-                                                        <span class="badge badge-pill badge-danger">{{ $t->status }}</span>
 
                                                     @endif
                                                 </td>
@@ -282,6 +284,17 @@
 
                                                 <td>{{ $t->asunto }}</td>
                                                 <td>{{ $t->mensaje }}</td>
+
+
+                                                <td>
+                                                    @if ($t->status == 'abierto')
+                                                        <span class="badge badge-pill badge-success">{{ $t->status }}</span>
+
+                                                    @elseif ($t->status == 'cerrado')
+                                                        <span class="badge badge-pill badge-danger">{{ $t->status }}</span>
+
+                                                    @endif
+                                                </td>
                                                 <td>{{ $t->created_at->format('d/m/Y') }}</td>
                                                 <td>
                                                     @if ($t->status == 'abierto')
@@ -289,15 +302,6 @@
 
                                                     @elseif ($t->status == 'cerrado')
                                                         {{ $t->notaMensaje }}
-
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($t->status == 'abierto')
-                                                        <span class="badge badge-pill badge-success">{{ $t->status }}</span>
-
-                                                    @elseif ($t->status == 'cerrado')
-                                                        <span class="badge badge-pill badge-danger">{{ $t->status }}</span>
 
                                                     @endif
                                                 </td>
