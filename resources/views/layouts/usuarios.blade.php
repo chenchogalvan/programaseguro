@@ -35,7 +35,7 @@
                                     <th>Estado de ultimo pago</th>
                                     <th>Estado de suscripción</th>
                                     <th>Fecha de ultimo pago</th>
-                                    <th>Fecha de vencimiento</th>
+                                    <th>Fecha de vencimiento de suscripción</th>
                                     <th>Acción</th>
                                 </tr>
                             </thead>
@@ -92,8 +92,8 @@
                                             @endif
                                             @endisset
                                         </td>
-                                        <td>@isset($u->pago[0]){{  $u->pago[0]->fechaPago == '' ? '' : $u->pago[0]->id.' | '. $u->pago[0]->fechaPago }}@endisset</td>
-                                        <td>@isset($u->pago[0]){{ $u->pago[0]->fechaVencimiento == '' ? '' : $u->pago[0]->fechaVencimiento }}@endisset</td>
+                                        <td>@isset($u->pago[0]){{  $u->pago[0]->fechaPago == '' ? '' : $u->pago[0]->fechaPago->format('d/m/Y H:s') }}@endisset</td>
+                                        <td>@isset($u->pago[0]){{ $u->pago[0]->fechaVencimiento == '' ? '' : $u->pago[0]->fechaVencimiento->format('d/m/Y') }}@endisset</td>
                                         <td>@isset($u->pago[0])
                                             <a href="{{ route('editarUsuario', $u->id) }}"
                                                 class="btn btn-warning btn-sm"><i class="fa fa-book"></i>

@@ -91,7 +91,8 @@
                                     <tr>
                                         <th>Estatus</th>
                                         <th>Id del pago</th>
-                                        <th>Fecha de pago</th>
+                                        <th>Fecha y hora de pago</th>
+                                        <th>Monto</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -110,7 +111,8 @@
 
                                             @endif</td>
                                             <td>{{ $p->payment_id }}</td>
-                                            <td>{{ $p->fechaPago == '' ? ' ' : $p->fechaPago->format('d/m/Y') }}</td>
+                                            <td>{{ $p->fechaPago == '' ? ' ' : $p->fechaPago->format('d/m/Y H:m') }}</td>
+                                            <td>${{ number_format($p->costoPago, 2) }}</td>
 
                                         </tr>
 

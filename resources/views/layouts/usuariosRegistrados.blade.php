@@ -108,7 +108,7 @@
                                     <tr>
                                         <th>Nombre</th>
                                         <th>Fecha de pago</th>
-                                        <th>Fecha de vencimiento</th>
+                                        <th>Fecha de vencimiento de suscripción</th>
                                         <th>Estatus del pago</th>
                                         <th>Tipo de pago</th>
                                         <th>Id del pago (MP)</th>

@@ -136,10 +136,17 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
     Route::get('/pagos/status', function (Request $request) {
 
+
         $payment_id = $request->payment_id;
         $status = $request->status;
         $payment_type = $request->payment_type;
         $u = App\Models\User::find(Auth::user()->id);
+
+        $costoPago = 1500.00;
+
+
+
+
 
         $fecha = Carbon::now()->addMonths(1);
         $fecha2 = Carbon::now()->subDays(1);
@@ -177,6 +184,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 $d->status = $status;
                 $d->payment_type = $payment_type;
                 $d->payment_id = $payment_id;
+                $d->costoPago = $costoPago;
                 $d->save();
                 return redirect()->route('dashboard')->with('successPago', '');
             }else if ($status == "pending") {
@@ -188,6 +196,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 $d->status = $status;
                 $d->payment_type = $payment_type;
                 $d->payment_id = $payment_id;
+                $d->costoPago = $costoPago;
                 $d->save();
                 return redirect()->back()->with('pending', '');
             }else if ($status == "failure") {
@@ -198,6 +207,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 $d->status = $status;
                 $d->payment_type = $payment_type;
                 $d->payment_id = $payment_id;
+                $d->costoPago = $costoPago;
                 $d->save();
                 return redirect()->back()->with('failure', '');
             }
@@ -213,6 +223,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 $d->status = $status;
                 $d->payment_type = $payment_type;
                 $d->payment_id = $payment_id;
+                $d->costoPago = $costoPago;
                 $d->save();
                 return redirect()->route('dashboard')->with('successPago', '');
             }else if ($status == "pending") {
@@ -224,6 +235,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 $d->status = $status;
                 $d->payment_type = $payment_type;
                 $d->payment_id = $payment_id;
+                $d->costoPago = $costoPago;
                 $d->save();
                 return redirect()->back()->with('pending', '');
             }else if ($status == "failure") {
@@ -234,6 +246,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 $d->status = $status;
                 $d->payment_type = $payment_type;
                 $d->payment_id = $payment_id;
+                $d->costoPago = $costoPago;
                 $d->save();
                 return redirect()->back()->with('failure', '');
             }
@@ -594,18 +607,21 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
             if (isset($u->pago[0]->status) == 'approved' && isset($u->pago[0]->fechaVencimiento) >= \Carbon\Carbon::now()) {
                 $estadoPago = 'Vigente';
                 $estadoPago = isset($u->pago[0]->status) ? $u->pago[0]->status : ' ';
-                $fechaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago : '';
-                $fechaVencimiento = isset($u->pago[0]->fechaVencimiento) ?  $u->pago[0]->fechaVencimiento : '';
+                $fechaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('d/m/Y') : '';
+                $horaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('H:s') : '';
+                $fechaVencimiento = isset($u->pago[0]->fechaVencimiento) ?  $u->pago[0]->fechaVencimiento->format('d/m/Y') : '';
             }else if(isset($u->pago[0]->status) == 'failure' && isset($u->pago[0]->fechaVencimiento) < \Carbon\Carbon::now() || isset($u->pago[0]->status) == 'failure'){
                 $estadoPago = 'Vencido';
                 $estadoPago = isset($u->pago[0]->status) ? $u->pago[0]->status : ' ';
-                $fechaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago : '';
-                $fechaVencimiento = isset($u->pago[0]->fechaVencimiento) ?  $u->pago[0]->fechaVencimiento : '';
+                $fechaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('d/m/Y') : '';
+                $horaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('H:s') : '';
+                $fechaVencimiento = isset($u->pago[0]->fechaVencimiento) ?  $u->pago[0]->fechaVencimiento->format('d/m/Y') : '';
             }else{
                 $estadoPago = 'Pendeinte';
                 $estadoPago = isset($u->pago[0]->status) ? $u->pago[0]->status : ' ';
-                $fechaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago : '';
-                $fechaVencimiento = isset($u->pago[0]->fechaVencimiento) ?  $u->pago[0]->fechaVencimiento : '';
+                $fechaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('d/m/Y') : '';
+                $horaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('H:s') : '';
+                $fechaVencimiento = isset($u->pago[0]->fechaVencimiento) ?  $u->pago[0]->fechaVencimiento->format('d/m/Y') : '';
             }
             $data[] = [
 
@@ -622,6 +638,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 'estadoPago' => $estadoPago,
                 'estadoSuscripcion' => $estadoPago,
                 'fechaUltimoPago' => $fechaUltimoPago,
+                'horaUltimoPago' => $horaUltimoPago,
                 'fechaVencimiento' => $fechaVencimiento,
 
 

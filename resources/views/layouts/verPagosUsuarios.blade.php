@@ -30,7 +30,7 @@
                             <li class="list-item"><span class="text-info ti-star"></span><b>RFC:</b>
                                 {{ $user->RFC }}
                             </li>
-                            <li class="list-item"><span class="text-info ti-star"></span><b>N° Seguro:</b>
+                            <li class="list-item"><span class="text-info ti-star"></span><b>N° IMSS:</b>
                                 {{ $user->NSS }}
                             </li>
                             <li class="list-item"><span class="text-info ti-star"></span><b>CURP:</b>
@@ -52,7 +52,7 @@
                                 <thead>
                                     <tr>
                                         <th>Fecha de pago</th>
-                                        <th>Fecha de vencimiento</th>
+                                        <th>Fecha de vencimiento de suscripción</th>
                                         <th>Estatus del pago</th>
                                         <th>Tipo de pago</th>
                                         <th>Id del pago (MP)</th>
