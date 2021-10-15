@@ -94,10 +94,12 @@
                                         </td>
                                         <td>@isset($u->pago[0]){{  $u->pago[0]->fechaPago == '' ? '' : $u->pago[0]->fechaPago->format('d/m/Y H:s') }}@endisset</td>
                                         <td>@isset($u->pago[0]){{ $u->pago[0]->fechaVencimiento == '' ? '' : $u->pago[0]->fechaVencimiento->format('d/m/Y') }}@endisset</td>
-                                        <td>@isset($u->pago[0])
+                                        <td>
                                             <a href="{{ route('editarUsuario', $u->id) }}"
                                                 class="btn btn-warning btn-sm"><i class="fa fa-book"></i>
                                                 Editar usuario</a>
+                                            @isset($u->pago[0])
+
                                             <a href="{{ route('verPagosUsuarios', $u->id) }}" class="btn btn-primary btn-sm"> <i class="fa fa-wpforms"></i>
                                                 Ver pagos </a>@endisset
                                         </td>

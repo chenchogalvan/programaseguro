@@ -99,12 +99,24 @@ class UserController extends Controller
 
         $u = User::find(Auth::user()->id);
 
-        // $u->email = $request->get('email');
-        $u->phone = $request->get('phone');
-        // $u->RFC = $request->get('RFC');
-        // $u->NSS = $request->get('NSS');
-        // $u->CURP = $request->get('CURP');
-        $u->save();
+        if ($request->pagoAprobado = 1) {
+            // $u->email = $request->get('email');
+            $u->phone = $request->get('phone');
+            $u->birthday = $request->get('birthday');
+            $u->RFC = $request->get('RFC');
+            $u->NSS = $request->get('NSS');
+            $u->CURP = $request->get('CURP');
+            $u->save();
+        }else{
+
+            $u->phone = $request->get('phone');
+            $u->save();
+
+        }
+
+
+
+
 
 
         return redirect()->route('perfil')->with('successDatos', '');

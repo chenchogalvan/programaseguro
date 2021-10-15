@@ -36,7 +36,6 @@ Route::post('/guardar-info', [UserController::class, 'guardarInfo'])->name('guar
 
 Route::get('/prueba', function () {
    return App\Models\Step::all();
-
 });
 
 
@@ -122,14 +121,6 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
         $upago = Pago::where('user_id', Auth::user()->id)->latest('fechaVencimiento')->get();
         $pago = Pago::where('user_id', Auth::user()->id)->get();
-
-
-        // if ($pago == null) {
-        //     $pago = 'nada';
-        // }
-
-        // return $pago;
-
 
         return view('layouts.pagos', compact('pago', 'upago'));
     })->name('pagos');
@@ -255,41 +246,6 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
         }
 
 
-
-
-        // if ($status == "approved") {
-        //     DB::select('CALL updatePagoStep(?)', array($u->id));
-
-        //     $d = new App\Models\Pago;
-        //     $d->user_id = $u->id;
-        //     $d->fechaVencimiento = $fecha;
-        //     $d->status = $status;
-        //     $d->payment_type = $payment_type;
-        //     $d->payment_id = $payment_id;
-        //     $d->save();
-        //     return redirect()->route('dashboard')->with('successPago', '');
-        // }else if ($status == "pending") {
-
-        //     $d = new App\Models\Pago;
-
-        //     $d->user_id = $u->id;
-        //     $d->fechaVencimiento = $fecha2;
-        //     $d->status = $status;
-        //     $d->payment_type = $payment_type;
-        //     $d->payment_id = $payment_id;
-        //     $d->save();
-        //     return redirect()->back()->with('pending', '');
-        // }else if ($status == "failure") {
-
-        //     $d = new App\Models\Pago;
-        //     $d->user_id = $u->id;
-        //     $d->fechaVencimiento = $fecha2;
-        //     $d->status = $status;
-        //     $d->payment_type = $payment_type;
-        //     $d->payment_id = $payment_id;
-        //     $d->save();
-        //     return redirect()->back()->with('failure', '');
-        // }
     });
 
     Route::get('/soporte', function () {
@@ -303,12 +259,6 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
     //Admin
     Route::get('/usuarios-registrados', function () {
-        // $u = App\Models\User::role('User')
-        //                 ->with('pago')
-        //                 ->where('fechaVencimiento', '<', Carbon::now())
-        //                 ->orderBy('fechaVencimiento', 'asc')
-        //                 ->groupBy('user_id')
-        //                 ->get();
 
         $u = App\Models\User::role('User')
                             ->with('pago', function($q){
@@ -323,12 +273,6 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                                 // ->groupBy('user_id')
                                 ->get();
                             })->get();
-
-        // if ($u->pago->exists()) {
-        //     $pagos = 'Existe';
-        // }else{
-        //     $pagos = 'no existe';
-        // }
 
         return view('layouts.usuarios', compact('u'));
     })->name('usuariosRegistrados');
@@ -361,6 +305,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
         $u->lastName = $request->get('lastName');
         $u->email = $request->get('email');
         $u->phone = $request->get('phone');
+        $u->email_verified_at = Carbon::now();
         $u->birthday = $request->get('birthday');
         $u->CURP = $request->get('CURP');
         $u->NSS = $request->get('NSS');
@@ -577,7 +522,6 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
 
     //Consulta de pagos vigentes
-
     Route::get('/lista-vigentes', function () {
 
         $pagos = App\Models\Pago::with('user')
@@ -685,7 +629,6 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
 
     //Cancelar pagos
-
     Route::get('/modificar-pago/{status}/{pago}', function ($status, App\Models\Pago $pago) {
 
 

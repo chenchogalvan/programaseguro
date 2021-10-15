@@ -23,7 +23,7 @@
                                     <div class="col-lg-6 align-self-center">
                                         <div class="user-dp"><img src="/images/team/user.png" alt=""></div>
                                         <div class="user-detail">
-                                            <h2 class="name">{{ Auth::user()->name }}</h2>
+                                            <h2 class="name">{{ Auth::user()->name.' '.Auth::user()->middleName.' '.Auth::user()->lastName }}</h2>
                                             <p class="designation mb-0">- {{ Auth::user()->email }}</p>
                                         </div>
                                     </div>
@@ -99,10 +99,23 @@
 
 
                                             @else
+
+
+
+                                            <input type="hidden" name="pagoAprobado" value="1">
+
+
+
                                                 <div class="form-group">
                                                     <label>Teléfono</label>
                                                     <input type="number" class="form-control" id="phone" name="phone"
                                                         value="{{ Auth::user()->phone }}" required>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Fecha de nacimiento</label>
+                                                    <input type="text" class="form-control" id="birthday" name="birthday"
+                                                        value="{{ Auth::user()->birthday }}" required>
                                                 </div>
 
                                                 <div class="form-group">
@@ -136,6 +149,9 @@
                         <ul class="list-unstyled ">
                             <li class="list-item"><span class="text-info ti-star"></span><b>Teléfono:</b>
                                 {{ Auth::user()->phone }}
+                            </li>
+                            <li class="list-item"><span class="text-info ti-star"></span><b>Fecha de nacimiento:</b>
+                                {{ Auth::user()->birthday }}
                             </li>
                             <li class="list-item"><span class="text-info ti-star"></span><b>Correo:</b>
                                 {{ Auth::user()->email }}

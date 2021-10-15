@@ -111,6 +111,7 @@
                                         <th>Fecha de vencimiento de suscripción</th>
                                         <th>Estatus del pago</th>
                                         <th>Tipo de pago</th>
+                                        <td>Total pagado</td>
                                         <th>Id del pago (MP)</th>
                                         <th>Acciones</th>
                                     </tr>
@@ -139,6 +140,7 @@
                                             <td>{{ $p->fechaVencimiento == '' ? ' ' : $p->fechaVencimiento->format('d/m/Y')   }}</td>
                                             <td>@if ($p->status == 'approved')<span class="badge bg-success float-end mt-1 text-white">Aprobado</span>@elseif ($p->status == 'pending')<span class="badge bg-warning float-end mt-1 text-white">   Pendiente </span>@elseif ($p->status == 'failure')<span class="badge bg-danger float-end mt-1 text-white">   Fallido/Cancelado </span>@endif</td>
                                             <td>{{ $p->payment_type }}</td>
+                                            <td>{{ $p->costoPago == '' ? '' : '$'.number_format($p->costoPago, 2); }}</td>
                                             <td>{{ $p->payment_id }}</td>
                                             <td>
 
