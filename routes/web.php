@@ -35,7 +35,7 @@ Route::post('/guardar-info', [UserController::class, 'guardarInfo'])->name('guar
 
 
 Route::get('/prueba', function () {
-   return App\Models\Step::all();
+
 });
 
 
@@ -82,16 +82,13 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
 
     Route::get('/dashboard', function () {
-
         $s = App\Models\Step::where('user_id', Auth::user()->id)->get();
-
         return view('layouts.dashboard', compact('s'));
     })->name('dashboard');
 
     //Usuario
 
     Route::get('/completar-datos', function () {
-
         return view('layouts.datos');
     })->name('completarDatos');
 
@@ -142,6 +139,13 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
         $fecha = Carbon::now()->addMonths(1);
         $fecha2 = Carbon::now()->subDays(1);
 
+        //Periodo gracia inicial
+        $periodoGracia = Carbon::parse($fecha)->addDays(5);
+
+
+
+
+
 
         $us = App\Models\User::role('User')->where('id', $u->id)
                     ->with('pago', function($q){
@@ -171,6 +175,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 $d = new App\Models\Pago;
                 $d->user_id = $u->id;
                 $d->fechaVencimiento = $fecha;
+                $d->periodoGracia = $periodoGracia;
                 $d->fechaPago = Carbon::now();
                 $d->status = $status;
                 $d->payment_type = $payment_type;
@@ -207,9 +212,16 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
             if ($status == "approved") {
                 DB::select('CALL updatePagoStep(?)', array($u->id));
 
+
+                $fechaRecurrente = Carbon::parse($pago->fechaVencimiento)->addMonths(1);
+                $periodoGraciaRecurrente = Carbon::parse($fechaRecurrente)->addDays(5);
+
+
+
                 $d = new App\Models\Pago;
                 $d->user_id = $u->id;
-                $d->fechaVencimiento = Carbon::parse($pago->fechaVencimiento)->addMonths(1);
+                $d->fechaVencimiento = $fechaRecurrente;
+                $d->periodoGracia = $periodoGraciaRecurrente;
                 $d->fechaPago = Carbon::now();
                 $d->status = $status;
                 $d->payment_type = $payment_type;
@@ -518,117 +530,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
     })->name('actualizarInfoUsuario');
 
 
-
-
-
-    //Consulta de pagos vigentes
-    Route::get('/lista-vigentes', function () {
-
-        $pagos = App\Models\Pago::with('user')
-                    ->where('fechaVencimiento', '>=', Carbon::now())
-                    ->where('status', '=', 'approved')
-                    ->orderBy('fechaVencimiento', 'asc')
-                    ->groupBy('user_id')
-                    ->get();
-
-
-        $u = App\Models\User::role('User')
-                    ->with('pago', function($q){
-                        return $q->latest('created_at')
-                        //where('created_at', '>=', Carbon::now())
-                        // ->where('status', '=', 'approved')
-                        ->orderBy('created_at', 'asc')
-                        ->groupBy('user_id');
-                    })->get();
-
-
-
-        foreach ($u as $u) {
-
-
-
-
-            if (isset($u->pago[0]->status) == 'approved' && isset($u->pago[0]->fechaVencimiento) >= \Carbon\Carbon::now()) {
-                $estadoPago = 'Vigente';
-                $estadoPago = isset($u->pago[0]->status) ? $u->pago[0]->status : ' ';
-                $fechaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('d/m/Y') : '';
-                $horaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('H:s') : '';
-                $fechaVencimiento = isset($u->pago[0]->fechaVencimiento) ?  $u->pago[0]->fechaVencimiento->format('d/m/Y') : '';
-            }else if(isset($u->pago[0]->status) == 'failure' && isset($u->pago[0]->fechaVencimiento) < \Carbon\Carbon::now() || isset($u->pago[0]->status) == 'failure'){
-                $estadoPago = 'Vencido';
-                $estadoPago = isset($u->pago[0]->status) ? $u->pago[0]->status : ' ';
-                $fechaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('d/m/Y') : '';
-                $horaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('H:s') : '';
-                $fechaVencimiento = isset($u->pago[0]->fechaVencimiento) ?  $u->pago[0]->fechaVencimiento->format('d/m/Y') : '';
-            }else{
-                $estadoPago = 'Pendeinte';
-                $estadoPago = isset($u->pago[0]->status) ? $u->pago[0]->status : ' ';
-                $fechaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('d/m/Y') : '';
-                $horaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('H:s') : '';
-                $fechaVencimiento = isset($u->pago[0]->fechaVencimiento) ?  $u->pago[0]->fechaVencimiento->format('d/m/Y') : '';
-            }
-            $data[] = [
-
-                'id' => $u->id,
-                'nombre' => $u->name,
-                'paterno' => $u->middleName,
-                'materno' => $u->lastName,
-                'email' => $u->email,
-                'phone' => $u->phone,
-                'birthday' => $u->birthday,
-                'CURP' => $u->CURP,
-                'NSS' => $u->NSS,
-                'RFC' => $u->RFC,
-                'estadoPago' => $estadoPago,
-                'estadoSuscripcion' => $estadoPago,
-                'fechaUltimoPago' => $fechaUltimoPago,
-                'horaUltimoPago' => $horaUltimoPago,
-                'fechaVencimiento' => $fechaVencimiento,
-
-
-            ];
-        }
-
-
-
-        // foreach ($pagos as $p) {
-        //     $data[] = [
-        //         'id' => $p->id,
-        //         'nombre' => $p->user->name.' '.$p->user->middleName.' '.$p->user->lastName,
-        //         'email' => $p->user->email,
-        //         'phone' => $p->user->phone,
-        //         'birthday' => $p->user->birthday,
-        //         'CURP' => $p->user->CURP,
-        //         'NSS' => $p->user->NSS,
-        //         'RFC' => $p->user->RFC,
-        //         'fechaVencimiento' => $p->fechaVencimiento
-        //     ];
-        // }
-
-        if (empty($data)) {
-            return redirect()->back()->with("emptyData", "No hay pagos aprobados o validos para exportar.");
-        }else{
-            $export = new App\Exports\PagosExport($data);
-
-            return Excel::download($export, 'lista.xlsx');
-        }
-
-
-
-    })->name('listaVigentes');
-
-    Route::get('/pagos-vencidos', function () {
-        $pagos = App\Models\Pago::with('user')
-                    ->where('fechaVencimiento', '<', Carbon::now())
-                    ->orderBy('fechaVencimiento', 'asc')
-                    ->groupBy('user_id')
-                    ->get();
-
-        return $pagos;
-    });
-
-
-    //Cancelar pagos
+    //Cancelar o aprobar pagos
     Route::get('/modificar-pago/{status}/{pago}', function ($status, App\Models\Pago $pago) {
 
 
@@ -649,10 +551,14 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
             if ($status == 'aprobar') {
 
+                $fechaVencimiento = Carbon::now()->addMonths(1);
+                $periodoGracia = Carbon::parse($fechaVencimiento)->addDays(5);
+
 
                 $p = $pago;
                 $p->status = 'approved';
-                $p->fechaVencimiento = Carbon::now()->addMonths(1);
+                $p->fechaVencimiento = $fechaVencimiento;
+                $p->periodoGracia = $periodoGracia;
                 $p->fechaPago = Carbon::now();
                 $p->save();
 
@@ -673,10 +579,13 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
             if ($status == 'aprobar') {
 
+                $fechaVen = Carbon::parse($pag->fechaVencimiento)->addMonths(1);
+                $periodoGrac = Carbon::parse($fechaVen)->addDays(5);
 
                 $p = $pago;
                 $p->status = 'approved';
-                $p->fechaVencimiento = Carbon::parse($pag->fechaVencimiento)->addMonths(1);
+                $p->fechaVencimiento = $fechaVen;
+                $p->periodoGracia = $periodoGrac;
                 $p->fechaPago = Carbon::now();
                 $p->save();
 
@@ -737,5 +646,228 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
         return view('layouts.verPagosUsuarios', compact('user', 'pagos'));
     })->name('verPagosUsuarios');
+
+
+
+    //Reportes
+    Route::get('/lista-vigentes', function () {
+
+        $pagos = App\Models\Pago::with('user')
+                    ->where('fechaVencimiento', '>=', Carbon::now())
+                    ->where('status', '=', 'approved')
+                    ->orderBy('fechaVencimiento', 'asc')
+                    ->groupBy('user_id')
+                    ->get();
+
+
+        $u = App\Models\User::role('User')
+                    ->with('pago', function($q){
+                        return $q->latest('created_at')
+                        //where('created_at', '>=', Carbon::now())
+                        // ->where('status', '=', 'approved')
+                        ->orderBy('created_at', 'asc');
+                        // ->groupBy('user_id');
+                    })->get();
+
+        $u = App\Models\User::role('User')
+                    ->with('pago', function($q){
+                        return $q->latest('created_at')
+                        //where('created_at', '>=', Carbon::now())
+                        // ->where('status', '=', 'approved')
+                        ->orderBy('created_at', 'asc');
+                        // ->groupBy('user_id');
+                    })->get();
+
+        // if ($u[0]->pago[0]->periodoGracia >= \Carbon\Carbon::now()->format('Y-m-d')) {
+        //     if ($u[0]->pago->count() >= 1 && isset($u[0]->pago[1]->count()) >= 1) {
+
+        //         $etiqueta = 'Recurrente';
+
+        //     }else if($u[0]->pago->count() >= 1 && isset($u[0]->pago[1]->count()) < 1){
+
+        //         $etiqueta = 'Alta';
+
+        //     }
+        // }else if ($u[0]->pago[0]->periodoGracia < \Carbon\Carbon::now()->format('Y-m-d')) {
+        //     if ($u[0]->pago->count() > 1 && $u[0]->pago[1]->count() == 0) {
+
+        //         $etiqueta = 'Vencido Recurrente';
+
+        //     }else if ($u[0]->pago->count() < 1 && $u[0]->pago[1]->count() > 1) {
+        //         $etiqueta = 'Vencido';
+        //     }
+        // }
+
+
+
+
+
+        // return $etiqueta;
+
+
+        foreach ($u as $u) {
+
+
+            if (isset($u->pago[0]->status) == 'approved' && isset($u->pago[0]->periodoGracia) >= \Carbon\Carbon::now()) {
+                $estadoPago = 'Vigente';
+                $estadoPago = isset($u->pago[0]->status) ? $u->pago[0]->status : ' ';
+                $fechaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('d/m/Y') : '';
+                $horaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('H:s') : '';
+                $fechaVencimiento = isset($u->pago[0]->fechaVencimiento) ?  $u->pago[0]->fechaVencimiento->format('d/m/Y') : '';
+
+                if ($u->pago[0]->periodoGracia >= \Carbon\Carbon::now()->format('Y-m-d')) {
+                    if ($u->pago->count() > 1) {
+                        $etiqueta = 'Recurrente';
+                    }else if($u->pago->count() == 1 ){
+                        $etiqueta = 'Alta';
+                    }
+                }else if ($u->pago[0]->periodoGracia < \Carbon\Carbon::now()->format('Y-m-d')) {
+                    if ($u->pago->count() > 1) {
+                        $etiqueta = 'Vencido Recurrente';
+                    }else if ($u->pago->count() == 1) {
+                        $etiqueta = 'Vencido';
+                    }
+                }
+
+            }else if(isset($u->pago[0]->status) == 'failure' && isset($u->pago[0]->periodoGracia) < \Carbon\Carbon::now() || isset($u->pago[0]->status) == 'failure'){
+                $estadoPago = 'Vencido';
+                $estadoPago = isset($u->pago[0]->status) ? $u->pago[0]->status : ' ';
+                $fechaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('d/m/Y') : '';
+                $horaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('H:s') : '';
+                $fechaVencimiento = isset($u->pago[0]->fechaVencimiento) ?  $u->pago[0]->fechaVencimiento->format('d/m/Y') : '';
+
+                if ($u->pago[0]->periodoGracia >= \Carbon\Carbon::now()->format('Y-m-d')) {
+                    if ($u->pago[0]->count() > 1) {
+                        $etiqueta = 'Recurrente';
+                    }else if($u->pago[0]->count() == 1 ){
+                        $etiqueta = 'Alta';
+                    }
+                }else if ($u->pago[0]->periodoGracia < \Carbon\Carbon::now()->format('Y-m-d')) {
+                    if ($u->pago[0]->count() > 1) {
+                        $etiqueta = 'Vencido Recurrente';
+                    }else if ($u->pago[0]->count() == 1) {
+                        $etiqueta = 'Vencido';
+                    }
+                }
+
+
+            }else{
+                $estadoPago = 'Pendeinte';
+                $estadoPago = isset($u->pago[0]->status) ? $u->pago[0]->status : ' ';
+                $fechaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('d/m/Y') : '';
+                $horaUltimoPago = isset($u->pago[0]->fechaPago) ? $u->pago[0]->fechaPago->format('H:s') : '';
+                $fechaVencimiento = isset($u->pago[0]->fechaVencimiento) ?  $u->pago[0]->fechaVencimiento->format('d/m/Y') : '';
+
+                $etiqueta = '';
+            }
+            $data[] = [
+
+                'id' => $u->id,
+                'nombre' => $u->name,
+                'paterno' => $u->middleName,
+                'materno' => $u->lastName,
+                'email' => $u->email,
+                'phone' => $u->phone,
+                'birthday' => $u->birthday,
+                'CURP' => $u->CURP,
+                'NSS' => $u->NSS,
+                'RFC' => $u->RFC,
+                'estadoPago' => $estadoPago,
+                'estadoSuscripcion' => $estadoPago,
+                'fechaUltimoPago' => $fechaUltimoPago,
+                'horaUltimoPago' => $horaUltimoPago,
+                'fechaVencimiento' => $fechaVencimiento,
+                'filtro' => $etiqueta,
+
+
+            ];
+        }
+
+
+
+
+        // foreach ($pagos as $p) {
+        //     $data[] = [
+        //         'id' => $p->id,
+        //         'nombre' => $p->user->name.' '.$p->user->middleName.' '.$p->user->lastName,
+        //         'email' => $p->user->email,
+        //         'phone' => $p->user->phone,
+        //         'birthday' => $p->user->birthday,
+        //         'CURP' => $p->user->CURP,
+        //         'NSS' => $p->user->NSS,
+        //         'RFC' => $p->user->RFC,
+        //         'fechaVencimiento' => $p->fechaVencimiento
+        //     ];
+        // }
+
+        if (empty($data)) {
+            return redirect()->back()->with("emptyData", "No hay datos para exportar.");
+        }else{
+            $export = new App\Exports\PagosExport($data);
+
+            return Excel::download($export, 'lista.xlsx');
+        }
+
+
+
+    })->name('listaVigentes');
+
+    Route::get('/lista-de-pagos', function () {
+        /*
+            Nombre
+            Email
+            N° Imss
+            Fecha de pago
+            Hora de pago
+            Tipo de pago
+            Monto
+            Estatus del pago
+            ID del pago
+        */
+
+        $pagos = App\Models\Pago::with('user')->get();
+
+        foreach ($pagos as  $p) {
+
+            if ($p->status == 'approved') {
+                $estadoPago = 'Aprobado';
+                $fechaPago = isset($p->fechaPago) ? $p->fechaPago->format('d/m/Y') : '';
+                $horaPago = isset($p->fechaPago) ? $p->fechaPago->format('H:s') : '';
+            }else if($p->status == 'failure'){
+                $estadoPago = 'Vencido';
+                $fechaPago = isset($p->fechaPago) ? $p->fechaPago->format('d/m/Y') : '';
+                $horaPago = isset($p->fechaPago) ? $p->fechaPago->format('H:s') : '';
+            }else{
+                $estadoPago = 'Pendeinte';
+                $fechaPago = isset($p->fechaPago) ? $p->fechaPago->format('d/m/Y') : '';
+                $horaPago = isset($p->fechaPago) ? $p->fechaPago->format('H:s') : '';
+            }
+            $data[] = [
+                'Nombre' => $p->user->name,
+                'Paterno' => $p->user->middleName,
+                'Materno' => $p->user->lastName,
+                'Email' => $p->user->email,
+                'NImss' => $p->user->NSS,
+                'FechaDePago' => $fechaPago,
+                'HoraDePago' => $horaPago,
+                'TipoDePago' => $p->payment_type,
+                'Monto' => $p->costoPago,
+                'EstatusDelPago' => $estadoPago,
+                'IDDelPago' => $p->payment_id,
+
+            ];
+        }
+
+
+        if (empty($data)) {
+            return redirect()->back()->with("emptyData", "No hay datos para exportar.");
+        }else{
+            $export = new App\Exports\PagosDescargaExport($data);
+
+            return Excel::download($export, 'lista-de-pagos.xlsx');
+        }
+
+
+    })->name('listaDePagos');
 
 });

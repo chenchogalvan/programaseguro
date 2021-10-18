@@ -29,7 +29,7 @@ class PagosExport implements FromArray, WithHeadings
 
     public function headings(): array
     {
-        return ["id", "nombre", "apellido paterno", "apellido materno", "email", "teléfono", "fecha de cumpleaños", "CURP", "N° IMSS", "RFC", "Estado del pago", "estado de la suscripcion", "fecha del ultimo pago", "hora del ultimo pago", "fecha de vencimiento de la suscripción"];
+        return ["id", "nombre", "apellido paterno", "apellido materno", "email", "teléfono", "fecha de cumpleaños", "CURP", "N° IMSS", "RFC", "Estado del pago", "estado de la suscripcion", "fecha del ultimo pago", "hora del ultimo pago", "fecha de vencimiento de la suscripción", "filtro"];
     }
 
 }

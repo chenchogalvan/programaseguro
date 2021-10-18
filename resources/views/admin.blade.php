@@ -204,15 +204,26 @@
                                         class="right-nav-text">Ayuda
                                     </span></a>
                             </li>
-                            <li>
-                                <a href="{{ route('listaVigentes') }}"><i class="fa fa-cloud-download"></i><span
-                                    class="right-nav-text">Descargar formato
-                                </span></a>
-                            </li>
+
                             <li>
                                 <a href="{{ route('altaUsuarioSistema') }}"><i class="fa fa-users"></i><span
                                         class="right-nav-text">Dar de alta usuarios
                                     </span></a>
+                            </li>
+
+
+                            <li class="mt-10 mb-10 text-muted pl-4 font-medium menu-title">Formatos de descarga </li>
+
+                            <li>
+                                <a href="{{ route('listaVigentes') }}"><i class="fa fa-cloud-download"></i><span
+                                    class="right-nav-text">Formato IMSS
+                                </span></a>
+                            </li>
+
+                            <li>
+                                <a href="{{ route('listaDePagos') }}"><i class="fa fa-cloud-download"></i><span
+                                    class="right-nav-text">Lista de pagos
+                                </span></a>
                             </li>
 
                             @endrole
