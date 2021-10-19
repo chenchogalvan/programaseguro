@@ -29,7 +29,7 @@
                                     <th>Teléfono</th>
                                     <th>Fecha de nacimiento</th>
                                     <th>CURP</th>
-                                    <th>NSS</th>
+                                    <th>N° IMSS</th>
                                     <th>RFC</th>
                                     <th>Estado de información</th>
                                     <th>Estado de ultimo pago</th>

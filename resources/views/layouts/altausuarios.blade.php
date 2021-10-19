@@ -87,7 +87,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="control-label" for="name">NSS</label>
+                                <label class="control-label" for="name">N° IMSS</label>
                                 <div class="mb-2">
                                     <input type="number" class="form-control" id="NSS" name="NSS" placeholder="" required />
                                 </div>
