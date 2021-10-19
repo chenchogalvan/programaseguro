@@ -159,7 +159,7 @@
                             <li class="list-item"><span class="text-info ti-star"></span><b>RFC:</b>
                                 {{ Auth::user()->RFC }}
                             </li>
-                            <li class="list-item"><span class="text-info ti-star"></span><b>N° Seguro:</b>
+                            <li class="list-item"><span class="text-info ti-star"></span><b>N° IMSS:</b>
                                 {{ Auth::user()->NSS }}
                             </li>
                             <li class="list-item"><span class="text-info ti-star"></span><b>CURP:</b>
