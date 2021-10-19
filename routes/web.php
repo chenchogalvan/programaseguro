@@ -468,6 +468,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
         $u->name = $request->get('name');
         $u->middleName = $request->get('middleName');
         $u->lastName = $request->get('lastName');
+        $u->email_verified_at = Carbon::now();
         $u->email = $request->get('email');
         $u->phone = '444444';
 

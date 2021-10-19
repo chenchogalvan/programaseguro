@@ -111,7 +111,7 @@
                                         <th>Fecha de vencimiento de suscripción</th>
                                         <th>Estatus del pago</th>
                                         <th>Tipo de pago</th>
-                                        <td>Total pagado</td>
+                                        <th>Total pagado</th>
                                         <th>Id del pago (MP)</th>
                                         <th>Acciones</th>
                                     </tr>
