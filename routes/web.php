@@ -806,7 +806,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
         }else{
             $export = new App\Exports\PagosExport($data);
 
-            return Excel::download($export, 'lista.xlsx');
+            return Excel::download($export, 'Lista de suscripciones.xlsx');
         }
 
 
@@ -865,7 +865,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
         }else{
             $export = new App\Exports\PagosDescargaExport($data);
 
-            return Excel::download($export, 'lista-de-pagos.xlsx');
+            return Excel::download($export, 'Lista de pagos.xlsx');
         }
 
 
