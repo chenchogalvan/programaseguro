@@ -387,7 +387,7 @@
         @if (Session::has('successMessage'))
             Swal.fire({
             title: 'Ticket registrado',
-            text: 'Ticket de soporte registrado exitosamente. Nos pondremos en contacto contigo lo antes posible.',
+            text: 'Ticket de ayuda registrado exitosamente. Nos pondremos en contacto contigo lo antes posible.',
             icon: 'success',
             confirmButtonText: 'Cerrar'
             })
