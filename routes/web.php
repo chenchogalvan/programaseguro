@@ -275,7 +275,7 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
         $u = App\Models\User::role('User')
                             ->with('pago', function($q){
                                 return $q->orderBy('created_at', 'desc')
-                                // ->where('status', '=', 'approved')
+                                ->where('status', '=', 'approved')
                                 // ->orWhere('status', '=', 'pending')
                                 // ->orWhere('status', '=', 'faiuler')
                                 //->latest('created_at')
@@ -661,23 +661,26 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                     ->get();
 
 
-        $u = App\Models\User::role('User')
-                    ->with('pago', function($q){
-                        return $q->latest('created_at')
-                        //where('created_at', '>=', Carbon::now())
-                        // ->where('status', '=', 'approved')
-                        ->orderBy('created_at', 'asc');
-                        // ->groupBy('user_id');
-                    })->get();
+        // $u = App\Models\User::role('User')
+        //             ->with('pago', function($q){
+        //                 return $q->latest('created_at')
+        //                 //where('created_at', '>=', Carbon::now())
+        //                 // ->where('status', '=', 'approved')
+        //                 ->orderBy('created_at', 'asc');
+        //                 // ->groupBy('user_id');
+        //             })->get();
 
         $u = App\Models\User::role('User')
                     ->with('pago', function($q){
                         return $q->latest('created_at')
                         //where('created_at', '>=', Carbon::now())
-                        // ->where('status', '=', 'approved')
+                        ->where('status', '=', 'approved')
+                        ->orWhere('status', '=', 'pending')
                         ->orderBy('created_at', 'asc');
                         // ->groupBy('user_id');
                     })->get();
+
+        // return $u;
 
         // if ($u[0]->pago[0]->periodoGracia >= \Carbon\Carbon::now()->format('Y-m-d')) {
         //     if ($u[0]->pago->count() >= 1 && isset($u[0]->pago[1]->count()) >= 1) {
