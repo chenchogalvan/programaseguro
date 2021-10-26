@@ -97,9 +97,11 @@ class UserController extends Controller
     public function actualizarDatos(Request $request)
     {
 
+        // return $request->all();
+
         $u = User::find(Auth::user()->id);
 
-        if ($request->pagoAprobado = 1) {
+        if ($request->get('pagoAprobado') == 1) {
             // $u->email = $request->get('email');
             $u->phone = $request->get('phone');
             $u->birthday = $request->get('birthday');
@@ -107,12 +109,17 @@ class UserController extends Controller
             $u->NSS = $request->get('NSS');
             $u->CURP = $request->get('CURP');
             $u->save();
-        }else{
+
+            $datos = 'uno';
+        }else if($request->get('pagoAprobado') == 2){
 
             $u->phone = $request->get('phone');
             $u->save();
 
+            $datos = '2';
         }
+
+        // return $datos;
 
 
 

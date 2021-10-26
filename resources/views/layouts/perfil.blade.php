@@ -93,6 +93,7 @@
 
                                                 <div class="form-group">
                                                     <label>Teléfono</label>
+                                                    <input type="hidden" name="pagoAprobado" value="2">
                                                     <input type="number" class="form-control" id="phone" name="phone"
                                                         value="{{ Auth::user()->phone }}" required>
                                                 </div>
