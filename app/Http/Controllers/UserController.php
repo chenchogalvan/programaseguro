@@ -27,13 +27,13 @@ class UserController extends Controller
     public function guardarInfo(Request $request)
     {
 
-        $request->validate([
+        $validacion = $request->validate([
             'name' => 'required',
             'middleName' => 'required',
             'lastName' => 'required',
-            'email' => 'required',
+            'email' => 'required|unique:users',
             'phone' => 'required|numeric',
-            'password' => 'required|string|min:5'
+            'password' => 'required|confirmed|string|min:5'
         ]);
 
         $password = $request->get('password');
@@ -62,6 +62,7 @@ class UserController extends Controller
         ];
 
         //Mail::to($request->get('email'))->send(new RegisterEmail($details));
+
 
         event(new Registered($u));
 

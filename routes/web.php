@@ -182,6 +182,13 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 $d->payment_id = $payment_id;
                 $d->costoPago = $costoPago;
                 $d->save();
+
+
+                Mail::to($u->email)->send(new \App\Mail\pagoEmail());
+
+
+
+
                 return redirect()->route('dashboard')->with('successPago', '');
             }else if ($status == "pending") {
 
@@ -228,6 +235,11 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                 $d->payment_id = $payment_id;
                 $d->costoPago = $costoPago;
                 $d->save();
+
+                Mail::to($u->email)->send(new \App\Mail\pagoEmail());
+
+
+
                 return redirect()->route('dashboard')->with('successPago', '');
             }else if ($status == "pending") {
 
@@ -542,6 +554,9 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
                     // ->groupBy('user_id')
                     ->first();
 
+        $user = App\Models\User::find($pago->user);
+
+
 
 
 
@@ -565,7 +580,9 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
                 DB::select('CALL updatePagoStep(?)', array($pago->user->id));
 
-                return redirect()->back()->with('modify', 'Se modifico el registro de <b>'.$pago->user->name.' '.$pago->user->middleName.' '.$pago->user->lastName.'</b> con el id de pago <b>'.$pago->payment_id.'</b> a <b>aprobado</b> de forma exitosa.');
+                Mail::to($pago->user->email)->send(new \App\Mail\pagoEmail());
+
+                return redirect()->back()->with('modify', 'Se modificó el registro de <b>'.$pago->user->name.' '.$pago->user->middleName.' '.$pago->user->lastName.'</b> con el id de pago <b>'.$pago->payment_id.'</b> a <b>aprobado</b> de forma exitosa.');
             }else if($status == 'cancelar'){
 
 
@@ -593,6 +610,8 @@ Route::prefix('/sistema')->middleware(['auth','verified'])->group(function () {
 
 
                 DB::select('CALL updatePagoStep(?)', array($pago->user->id));
+
+                Mail::to($pago->user->email)->send(new \App\Mail\pagoEmail());
 
                 return redirect()->back()->with('modify', 'Se modifico el registro de <b>'.$pago->user->name.' '.$pago->user->middleName.' '.$pago->user->lastName.'</b> con el id de pago <b>'.$pago->payment_id.'</b> a <b>aprobado</b> de forma exitosa.');
             }else if($status == 'cancelar'){

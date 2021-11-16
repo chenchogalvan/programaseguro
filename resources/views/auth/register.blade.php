@@ -143,53 +143,57 @@
                                 <div class="row">
                                     <div class="section-field mb-20 col-sm-12">
                                         <label class="mb-10" for="fname">Nombre(s) </label>
-                                        <input id="fname" class="web form-control" type="text" placeholder="Nombre(s)"
-                                            name="name">
+                                        <input id="fname" class="web form-control" type="text" placeholder="Ej. Juan"
+                                            name="name" value="{{ old('name') }}">
                                     </div>
                                     <div class="section-field mb-20 col-sm-6">
                                         <label class="mb-10" for="mname">Apellido paterno </label>
                                         <input id="mname" class="web form-control" type="text"
-                                            placeholder="Apellido paterno" name="middleName">
+                                            placeholder="Ej. Garcia" name="middleName" value="{{ old('middleName') }}">
                                     </div>
                                     <div class="section-field mb-20 col-sm-6">
                                         <label class="mb-10" for="lname">Apellido materno </label>
                                         <input id="lname" class="web form-control" type="text"
-                                            placeholder="Apellido materno" name="lastName">
+                                            placeholder="Ej. Medina" name="lastName" value="{{ old('lastName') }}">
                                     </div>
                                 </div>
                                 <div class="section-field mb-20">
                                     <label class="mb-10" for="phone">Teléfono </label>
-                                    <input type="phone" placeholder="Teléfono" id="phone" class="form-control"
-                                        name="phone">
+                                    <input type="phone" placeholder="Ej. 81123456" id="phone" class="form-control"
+                                        name="phone" value="{{ old('phone') }}">
                                 </div>
 
                                 <div class="section-field mb-20">
-                                    <label class="mb-10" for="email">Correo* </label>
-                                    <input type="email" placeholder="Email*" id="email" class="form-control"
-                                        name="email">
+                                    <label class="mb-10" for="email">Correo </label>
+                                    <input type="email" placeholder="Ej. juan@correo.com" id="email" class="form-control"
+                                        name="email" value="{{ old('email') }}">
                                 </div>
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
 
 
                                 <div class="section-field mb-20">
-                                    <label class="mb-10" for="password">Contraseña* <small>Mínimo 5 caracteres</small></label>
+                                    <label class="mb-10" for="password">Contraseña <small>Mínimo 5 caracteres</small></label>
                                     <input class="Password form-control" id="password" type="password"
-                                        placeholder="Password" name="password">
+                                        placeholder="" name="password">
                                 </div>
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <div class="section-field mb-20">
+                                    <label class="mb-10" for="password">Confirmar contraseña <small></small></label>
+                                    <input class="Password form-control" id="password_confirmation" type="password"
+                                        placeholder="" name="password_confirmation">
+                                </div>
                                 {{-- <a href="#" class="button">
                                     <span>Registrarse</span>
                                     <i class="fa fa-check"></i>
                                 </a> --}}
-                                <button class="button">Enviar datos <i class="fa fa-check"></i></button>
+                                @if (count($errors) > 0)
+                                    <div class = "alert alert-danger">
+                                        <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                                <button class="btn button" id="btnEnviar">Enviar datos <i class="fa fa-check"></i></button>
 
                             </form>
 
@@ -251,6 +255,7 @@
 
     <!-- custom -->
     <script src="/js/custom.js"></script>
+
 
 </body>
 

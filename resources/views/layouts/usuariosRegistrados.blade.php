@@ -145,19 +145,19 @@
                                             <td>
 
                                                 @if ($p->status == 'pending')
-                                                    <a href="{{ route('modificarPago', ['aprobar', $p]) }}"
+                                                    <a onclick="return confirm('¿Seguro que quieres aprobar el pago?')" href="{{ route('modificarPago', ['aprobar', $p]) }}"
                                                         class="btn btn-success">Aprobar pago</a>
 
-                                                    <a href="{{ route('modificarPago', ['cancelar', $p]) }}"
+                                                    <a onclick="return confirm('¿Seguro que quieres cancelar el pago?')" href="{{ route('modificarPago', ['cancelar', $p]) }}"
                                                         class="btn btn-danger">Cancelar pago</a>
 
                                                 @elseif ($p->status == 'failure')
-                                                    <a href="{{ route('modificarPago', ['aprobar', $p]) }}"
+                                                    <a onclick="return confirm('¿Seguro que quieres aprobar el pago?')" href="{{ route('modificarPago', ['aprobar', $p]) }}"
                                                         class="btn btn-success">Aprobar pago</a>
 
 
                                                 @elseif ($p->status == 'approved')
-                                                    <a href="{{ route('modificarPago', ['cancelar', $p]) }}"
+                                                    <a onclick="return confirm('¿Seguro que quieres cancelar el pago?')" href="{{ route('modificarPago', ['cancelar', $p]) }}"
                                                         class="btn btn-danger">Cancelar pago</a>
 
                                                 @endif

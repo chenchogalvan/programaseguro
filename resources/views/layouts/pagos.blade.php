@@ -44,7 +44,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right">
-                        <li class="breadcrumb-item"><a href="index.html" class="default-color">Inicio</a>
+                        <li class="breadcrumb-item"><a href="#" class="default-color">Inicio</a>
                         </li>
                         <li class="breadcrumb-item active">Suscripción</li>
                     </ol>
@@ -71,7 +71,7 @@
 
                         </div>
                         <div class="pricing-prize">
-                            <h2>$1,500 /<span> Mensuales</span> </h2>
+                            <h2>$1,500<span style="font-size: 10px;">MX</span> /<span> Mensuales</span> </h2>
                         </div>
                         <div class="pricing-button">
                             <a class="button" href="{{ $preference->init_point }}">Realizar pago</a>
